@@ -2,6 +2,7 @@ import './App.css';
 import { BrowserRouter, Route } from 'react-router-dom';
 import SignUp from './sign_up';
 import SignIn from './sign_in';
+import Profile from './profile';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
          
             <Route path='/sign-up' component={ SignUp }/>
             <Route path='/sign-in' component={ SignIn }/>
+            <Route path='/profile' component={ Profile }/>
           </nav>
       </div>
     </BrowserRouter>
