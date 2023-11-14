@@ -1,6 +1,6 @@
 import React, { useState } from "react"; 
 import { useHistory } from "react-router-dom";
-import './auth.css';
+import './css/auth.css';
 import axios from 'axios'; 
 
 

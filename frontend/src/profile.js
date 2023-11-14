@@ -1,4 +1,4 @@
-import './profile.css';
+import './css/profile.css';
 
 const Profile = () => {
     const user_email = sessionStorage.getItem('user_email');
