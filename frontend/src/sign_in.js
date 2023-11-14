@@ -24,6 +24,12 @@ const SignIn = () => {
 
             // if auth successful
             if (response.status === 200) {
+                // save in session
+                const { user_login } = response.data;
+                sessionStorage.setItem("user_email", email);
+                sessionStorage.setItem("user_login", user_login);
+
+                // Redirect to profile page
                 history.push("/profile");
                 window.location.reload();
             }

@@ -77,8 +77,7 @@ app.post('/sign-in', async (req, res) => {
             const bcrypt = require("bcrypt");
             const isPasswordValid = await bcrypt.compare(password, row.password);
             if (isPasswordValid) {
-                // if password valid
-                res.sendStatus(200);
+                res.status(200).json({ user_login: row.login }); 
             } else {
                 // else password no valid
                 res.status(401).json({ error: 'Incorrect password' });

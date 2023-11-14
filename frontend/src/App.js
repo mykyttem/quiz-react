@@ -30,6 +30,10 @@ function App() {
               <li className="nav-item">
                 <a href="/sign-in" className="nav-link">Sign In</a>
               </li>
+
+              <li className="nav-item">
+                <a href="/profile" className="nav-link">Profile</a>
+              </li>
             </ul>
 
          

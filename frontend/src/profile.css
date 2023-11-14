@@ -1,0 +1,42 @@
+.profile {
+    width: 50%;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.profile h1 {
+    text-align: center;
+    color: #7439db;
+}
+
+.user-info {
+    margin-bottom: 20px;
+}
+
+.quiz-list {
+    list-style: none;
+    padding: 0;
+}
+
+.quiz-list li {
+    margin: 10px 0;
+}
+
+
+.logout-button {
+    background-color: rgba(255, 69, 0, 0.4);
+    border: none;
+    color: #fff; 
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: rgba(255, 69, 0, 0.7);
+}
