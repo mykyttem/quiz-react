@@ -25,9 +25,10 @@ const SignIn = () => {
             // if auth successful
             if (response.status === 200) {
                 // save in session
-                const { user_login } = response.data;
+                const { user_login, user_id } = response.data;
                 sessionStorage.setItem("user_email", email);
                 sessionStorage.setItem("user_login", user_login);
+                sessionStorage.setItem("user_id", user_id);
 
                 // Redirect to profile page
                 history.push("/profile");

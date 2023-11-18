@@ -1,12 +1,28 @@
+import React, { useState } from 'react';
+import CreateQuizModal from './modal_win';
 import './css/profile.css';
+import './css/modal.css';
+
 
 const Profile = () => {
+    // data user from session
     const user_email = sessionStorage.getItem('user_email');
     const user_login = sessionStorage.getItem('user_login');
 
+
+    // button log out
     const handleLogout = () => {
         sessionStorage.clear();
         window.location.reload();
+    }
+
+    // state modal
+    const [isCreateQuizModalOpen, setCreateQuizModalOpen] = useState(false);
+
+    // if click button open modal
+    const handleCreateQuizClick = () => {
+        // set True
+        setCreateQuizModalOpen(true);
     }
 
     if (user_email && user_login) {
@@ -23,6 +39,9 @@ const Profile = () => {
 
                 
                 <h2>Created Quizzes</h2>
+                <button className="create-quiz" onClick={handleCreateQuizClick}>Create new quiz</button>
+                {isCreateQuizModalOpen && <CreateQuizModal onClose={() => setCreateQuizModalOpen(false)} />}
+
                 <ul className="quiz-list">
                     <li>Quiz 1</li>
                     <li>Quiz 2</li>
@@ -42,5 +61,6 @@ const Profile = () => {
         );
     }
 };
+
 
 export default Profile;

@@ -28,7 +28,7 @@
 
 
 .logout-button {
-    background-color: rgba(255, 69, 0, 0.4);
+    background-color: rgba(212, 22, 22, 0.4);
     border: none;
     color: #fff; 
     font-size: 16px;
@@ -38,5 +38,20 @@
 }
 
 .logout-button:hover {
-    background-color: rgba(255, 69, 0, 0.7);
+    background-color: rgba(255, 38, 0, 0.956)
+}
+
+
+.create-quiz {
+    background-color: rgba(224, 67, 10, 0.4);
+    border: none;
+    color: #fff; 
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
+}
+
+.create-quiz:hover {
+    background-color: rgba(255, 68, 0, 0.907);
 }

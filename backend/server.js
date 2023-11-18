@@ -15,8 +15,11 @@ const db = new sqlite3.Database('database.db', sqlite3.OPEN_CREATE | sqlite3.OPE
 
 
 // create table if not
-const sql = 'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, login TEXT, email TEXT, password TEXT)';
-db.run(sql);
+const sql_table_users = 'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, login TEXT, email TEXT, password TEXT)';
+db.run(sql_table_users);
+
+const sql_table_quizzes = 'CREATE TABLE IF NOT EXISTS quizzes(id INTEGER PRIMARY KEY, id_author INTEGER, question TEXT, options TEXT)';
+db.run(sql_table_quizzes);
 
 
 // sign up
@@ -77,7 +80,7 @@ app.post('/sign-in', async (req, res) => {
             const bcrypt = require("bcrypt");
             const isPasswordValid = await bcrypt.compare(password, row.password);
             if (isPasswordValid) {
-                res.status(200).json({ user_login: row.login }); 
+                res.status(200).json({ user_login: row.login, user_id: row.id }); 
             } else {
                 // else password no valid
                 res.status(401).json({ error: 'Incorrect password' });
@@ -85,6 +88,16 @@ app.post('/sign-in', async (req, res) => {
         }
     });
 });
+
+
+// create quiz
+app.post('/profile', async (req, res) => {
+    const {question, options, user_id} = req.body;
+
+    // save in DB
+    const save_quiz = 'INSERT INTO quizzes(id_author, question, options) VALUES (?, ?, ?)';
+    db.run(save_quiz, [user_id, question, String(options)]);
+})
 
 
 // listening port
