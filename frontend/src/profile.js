@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import CreateQuizModal from './modal_win';
+import React from 'react';
+import { useHistory } from "react-router-dom";
 import './css/profile.css';
-import './css/modal.css';
 
 
 const Profile = () => {
@@ -9,6 +8,7 @@ const Profile = () => {
     const user_email = sessionStorage.getItem('user_email');
     const user_login = sessionStorage.getItem('user_login');
 
+    const history = useHistory();
 
     // button log out
     const handleLogout = () => {
@@ -16,14 +16,12 @@ const Profile = () => {
         window.location.reload();
     }
 
-    // state modal
-    const [isCreateQuizModalOpen, setCreateQuizModalOpen] = useState(false);
 
-    // if click button open modal
-    const handleCreateQuizClick = () => {
-        // set True
-        setCreateQuizModalOpen(true);
+    const redirectPage_CreateQuiz = () => {
+        history.push("/profile/create-quiz");
+        window.location.reload();
     }
+
 
     if (user_email && user_login) {
         return (
@@ -39,8 +37,7 @@ const Profile = () => {
 
                 
                 <h2>Created Quizzes</h2>
-                <button className="create-quiz" onClick={handleCreateQuizClick}>Create new quiz</button>
-                {isCreateQuizModalOpen && <CreateQuizModal onClose={() => setCreateQuizModalOpen(false)} />}
+                <button className="create-quiz" onClick={redirectPage_CreateQuiz}>Create new quiz</button>
 
                 <ul className="quiz-list">
                     <li>Quiz 1</li>

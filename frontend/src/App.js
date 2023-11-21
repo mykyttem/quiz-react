@@ -2,7 +2,10 @@ import './css/App.css';
 import { BrowserRouter, Route } from 'react-router-dom';
 import SignUp from './sign_up';
 import SignIn from './sign_in';
+
 import Profile from './profile';
+import CreateQuiz from './create_quiz';
+
 
 function App() {
   return (
@@ -37,9 +40,11 @@ function App() {
             </ul>
 
          
-            <Route path='/sign-up' component={ SignUp }/>
-            <Route path='/sign-in' component={ SignIn }/>
-            <Route path='/profile' component={ Profile }/>
+            <Route path='/sign-up' component={ SignUp } />
+            <Route path='/sign-in' component={ SignIn } />
+
+            <Route exact path='/profile' component={Profile} />
+            <Route path='/profile/create-quiz' component={CreateQuiz} />
           </nav>
       </div>
     </BrowserRouter>

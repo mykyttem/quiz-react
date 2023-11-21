@@ -90,14 +90,20 @@ app.post('/sign-in', async (req, res) => {
 });
 
 
-// create quiz
-app.post('/profile', async (req, res) => {
-    const {question, options, user_id} = req.body;
+// save created quiz
+app.post('/profile/create-quiz', async (req, res) => {
+    // get json data
+    const data = req.body; 
 
-    // save in DB
+    // get all questions in one list and options
+    const questions = data.map(item => item.question);
+    const options = data.map(item => item.options);
+    const author_id = data[0].user_id
+
+    // Save quiz in DB
     const save_quiz = 'INSERT INTO quizzes(id_author, question, options) VALUES (?, ?, ?)';
-    db.run(save_quiz, [user_id, question, String(options)]);
-})
+    await db.run(save_quiz, [author_id, JSON.stringify(questions), JSON.stringify(options)]);
+});
 
 
 // listening port
