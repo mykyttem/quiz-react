@@ -5,6 +5,7 @@ import SignIn from './sign_in';
 
 import Profile from './profile';
 import CreateQuiz from './create_quiz';
+import OwnQuizzes from './own_quizzes';
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
 
             <Route exact path='/profile' component={Profile} />
             <Route path='/profile/create-quiz' component={CreateQuiz} />
+            <Route path='/profile/own-quizzes' component={OwnQuizzes} />
           </nav>
       </div>
     </BrowserRouter>

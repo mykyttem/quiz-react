@@ -14,8 +14,7 @@
     position: relative; 
 }
   
-  
-.question-input {
+.question-input, .title-quiz {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -24,14 +23,11 @@
     border-radius: 8px; 
 }
 
-
-
 .options-container {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-
 
 .option-card {
     width: 100%;
@@ -44,13 +40,11 @@
     transition: background-color 0.3s;
 }
 
-
 .option-card:hover {
     background-color: #c0c0c0;
 }
 
-
-button {
+.submit-button, .next-question-button {
     color: #007bff;
     background-color: #fff;
     padding: 10px 20px;
@@ -61,12 +55,11 @@ button {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-button:hover {
+.submit-button, .next-question-button:hover {
     background-color: #007bff;
     color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
-
 
 .next-button {
     position: absolute;

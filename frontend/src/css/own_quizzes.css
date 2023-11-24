@@ -1,0 +1,26 @@
+.quiz-block {
+    width: 200px; 
+    height: 200px; 
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    h2 {
+        margin-bottom: 8px;
+        color: #333333;
+    }
+
+    p {
+        margin: 0;
+        color: #666666;
+    }
+}

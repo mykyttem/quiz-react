@@ -17,16 +17,6 @@
     margin-bottom: 20px;
 }
 
-.quiz-list {
-    list-style: none;
-    padding: 0;
-}
-
-.quiz-list li {
-    margin: 10px 0;
-}
-
-
 .logout-button {
     background-color: rgba(212, 22, 22, 0.4);
     border: none;
@@ -41,8 +31,7 @@
     background-color: rgba(255, 38, 0, 0.956)
 }
 
-
-.create-quiz {
+.btn-quiz {
     background-color: rgba(224, 67, 10, 0.4);
     border: none;
     color: #fff; 
@@ -52,6 +41,6 @@
     transition: background-color 0.3s;
 }
 
-.create-quiz:hover {
+.btn-quiz:hover {
     background-color: rgba(255, 68, 0, 0.907);
 }

@@ -22,6 +22,11 @@ const Profile = () => {
         window.location.reload();
     }
 
+    const redirectPage_OwnQuizzes = () => {
+        history.push("/profile/own-quizzes");
+        window.location.reload();
+    }
+
 
     if (user_email && user_login) {
         return (
@@ -36,14 +41,9 @@ const Profile = () => {
                 <button className="logout-button" onClick={handleLogout}>Log Out</button>
 
                 
-                <h2>Created Quizzes</h2>
-                <button className="create-quiz" onClick={redirectPage_CreateQuiz}>Create new quiz</button>
-
-                <ul className="quiz-list">
-                    <li>Quiz 1</li>
-                    <li>Quiz 2</li>
-                    <li>Quiz 3</li>
-                </ul>
+                <h2>Quizzes</h2>
+                <button className="btn-quiz" onClick={redirectPage_CreateQuiz}>Create new quiz</button>
+                <button className="btn-quiz" onClick={redirectPage_OwnQuizzes}>My own quizzes</button>
             </div>
         );
     } else {

@@ -18,7 +18,7 @@ const db = new sqlite3.Database('database.db', sqlite3.OPEN_CREATE | sqlite3.OPE
 const sql_table_users = 'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, login TEXT, email TEXT, password TEXT)';
 db.run(sql_table_users);
 
-const sql_table_quizzes = 'CREATE TABLE IF NOT EXISTS quizzes(id INTEGER PRIMARY KEY, id_author INTEGER, question TEXT, options TEXT)';
+const sql_table_quizzes = 'CREATE TABLE IF NOT EXISTS quizzes(id INTEGER PRIMARY KEY, id_author INTEGER, title TEXT, question TEXT, options TEXT)';
 db.run(sql_table_quizzes);
 
 
@@ -96,13 +96,59 @@ app.post('/profile/create-quiz', async (req, res) => {
     const data = req.body; 
 
     // get all questions in one list and options
+    const author_id = data[0].user_id;
+    const title = data[0].title;
     const questions = data.map(item => item.question);
     const options = data.map(item => item.options);
-    const author_id = data[0].user_id
 
     // Save quiz in DB
-    const save_quiz = 'INSERT INTO quizzes(id_author, question, options) VALUES (?, ?, ?)';
-    await db.run(save_quiz, [author_id, JSON.stringify(questions), JSON.stringify(options)]);
+    const save_quiz = 'INSERT INTO quizzes(id_author, title, question, options) VALUES (?, ?, ?, ?)';
+    await db.run(save_quiz, [author_id, title, JSON.stringify(questions), JSON.stringify(options)]);
+});
+
+
+// get own quizzes
+app.post('/profile/own-quizzes', async (req, res) => {
+    try {
+        // get id user
+        const user_id = req.body.user_id;
+
+        // Fetch author login
+        const getLogin_author = 'SELECT login FROM users WHERE id = ?';
+        const authorRow = await new Promise((resolve, reject) => {
+            db.get(getLogin_author, [user_id], (err, row) => {
+                if (err) reject(err);
+                resolve(row);
+            });
+        });
+
+        const author = authorRow ? authorRow.login : null;
+
+        // Fetch quizzes for the user
+        const getQuizzes_user = 'SELECT * FROM quizzes WHERE id_author = ?';
+        const quizzesRow = await new Promise((resolve, reject) => {
+            db.get(getQuizzes_user, [user_id], (err, row) => {
+                if (err) reject(err);
+                resolve(row);
+            });
+        });
+
+        // Check if quizzes exist for the user
+        if (quizzesRow) {
+            const amountQuestions = Array(quizzesRow.questions).length;
+
+            // Send the response
+            res.status(200).json({
+                title: quizzesRow.title,
+                amount_questions: amountQuestions,
+            });
+        } else {
+            res.status(404).json({ error: 'Quizzes not found for the user' });
+        }
+    } catch (error) {
+        console.error('Error fetching quizzes:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 
