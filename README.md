@@ -17,19 +17,16 @@ open 2 console
 first console
 ```bash
 cd frontend
-```
-```bash
+npm install
 npm start
 ```
 
 second console
 ```bash
 cd backend
-```
-```bash
+npm install
 npm start dev
 ```
-
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
