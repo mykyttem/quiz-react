@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useState, useEffect } from 'react';
 import './css/quizzes.css';
 
 
-const OwnQuizzes = () => {
+const Quizzes = () => {
     // states
-    const user_id = sessionStorage.getItem('user_id');
     const [quizzes, setQuizzes] = useState([]);
-        
+
     // when loading the page
     useEffect(() => {
         const fetchQuizzes = async () => {
             try {
-                // send user id
-                const response = await axios.post('/profile/own-quizzes', { user_id });
-
-                // get quizzes user 
+                // get quizzes all users
+                const response = await axios.post('/quizzes');
                 setQuizzes(response.data.row);
             } catch (error) {
                 console.error('Error fetching quizzes:', error);
@@ -23,7 +20,7 @@ const OwnQuizzes = () => {
         };
 
         fetchQuizzes();
-    }, [user_id]);
+    }, []);
 
 
     return (
@@ -32,11 +29,12 @@ const OwnQuizzes = () => {
                 <div key={quiz.id} className="quiz-block">
                     <h1>{quiz.title}</h1>
                     <p>Questions: {Array(quiz.question).length}</p>
+                    <h1>{quiz.author_login}</h1>
                 </div>
             ))}
         </div>
-    );  
-};
+    );
+}
 
 
-export default OwnQuizzes;
+export default Quizzes;

@@ -8,7 +8,7 @@ app.use(express.json());
 
 // import
 const { initDatabase } = require('./config');
-const { signUp, signIn, profile_CreateQuiz, getOwnQuizzes } = require('./requestSender');
+const { signUp, signIn, profile_CreateQuiz, getOwnQuizzes, quizzes } = require('./requestSender');
 
 // connect to the DataBase
 initDatabase();
@@ -18,6 +18,7 @@ app.post('/sign-up', signUp);
 app.post('/sign-in', signIn);
 app.post('/profile/create-quiz', profile_CreateQuiz);
 app.post('/profile/own-quizzes', getOwnQuizzes);
+app.post('/quizzes', quizzes)
 
 
 // listening port

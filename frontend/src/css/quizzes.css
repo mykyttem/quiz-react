@@ -9,6 +9,7 @@
     margin-right: 16px;
     margin-bottom: 16px;
     transition: transform 0.3s ease;
+    
 
     &:hover {
         transform: scale(1.05);
@@ -24,3 +25,9 @@
         color: #666666;
     }
 }
+
+
+.quizzes-container {
+    display: flex;
+    flex-wrap: wrap;
+}  

@@ -6,6 +6,7 @@ import SignIn from './sign_in';
 import Profile from './profile';
 import CreateQuiz from './create_quiz';
 import OwnQuizzes from './own_quizzes';
+import Quizzes from './users_quizzes';
 
 
 function App() {
@@ -21,12 +22,8 @@ function App() {
                 <a href="/about" className="nav-link">About</a>
               </li>
               <li className="nav-item">
-                <a href="/services" className="nav-link">Services</a>
+                <a href="/quizzes" className="nav-link">Quizzes</a>
               </li>
-              <li className="nav-item">
-                <a href="/contact" className="nav-link">Contact</a>
-              </li>
-
               <li className="nav-item">
                 <a href="/sign-up" className="nav-link">Sign Up</a>
               </li>
@@ -47,6 +44,8 @@ function App() {
             <Route exact path='/profile' component={Profile} />
             <Route path='/profile/create-quiz' component={CreateQuiz} />
             <Route path='/profile/own-quizzes' component={OwnQuizzes} />
+
+            <Route path='/quizzes' component={Quizzes} />
           </nav>
       </div>
     </BrowserRouter>
