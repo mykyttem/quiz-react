@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
-import './css/profile.css';
+import '../css/profile.css';
 
 
 const Profile = () => {

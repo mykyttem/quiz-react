@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import './css/create_quiz.css';
+import '../css/create_quiz.css';
 
 
 const CreateQuiz = () => {

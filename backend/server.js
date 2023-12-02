@@ -8,7 +8,11 @@ app.use(express.json());
 
 // import
 const { initDatabase } = require('./config');
-const { signUp, signIn, profile_CreateQuiz, getOwnQuizzes, edit_OwnQuizzes, update_OwnQuiz, delete_OwnQuiz, quizzes } = require('./requestSender');
+
+const { profile_CreateQuiz, getOwnQuizzes, edit_OwnQuizzes, update_OwnQuiz, delete_OwnQuiz } = require('./controllers/controller_profile');
+const { signUp, signIn } = require('./controllers/controller_auth');
+const { quizzes } = require('./controllers/controller_quizzes');
+
 
 // connect to the DataBase
 initDatabase();

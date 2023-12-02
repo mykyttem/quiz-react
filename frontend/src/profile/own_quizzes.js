@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
-import './css/quizzes.css';
+import '../css/quizzes.css';
 
 
 const OwnQuizzes = () => {

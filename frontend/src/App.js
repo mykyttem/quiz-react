@@ -3,14 +3,14 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Home from './home';
 
-import SignUp from './sign_up';
-import SignIn from './sign_in';
+import SignUp from './auth/sign_up';
+import SignIn from './auth/sign_in';
 
-import Profile from './profile';
-import CreateQuiz from './create_quiz';
-import OwnQuizzes from './own_quizzes';
+import Profile from './profile/profile';
+import CreateQuiz from './profile/create_quiz';
+import OwnQuizzes from './profile/own_quizzes';
 import Quizzes from './users_quizzes';
-import EditOwnQuizzes from './edit_own_quizzes';
+import EditOwnQuizzes from './profile/edit_own_quizzes';
 
 
 function Page_notFound() {
