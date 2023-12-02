@@ -1,5 +1,6 @@
 const { db } = require('../config');
 const bcrypt = require("bcrypt")
+const { logger } = require('../config');
 
 
 const signUp = async (req, res) => {
@@ -16,7 +17,7 @@ const signUp = async (req, res) => {
 
         db.get(check_email, [email], async (err, row) => {
             if (err) {
-                console.error(err.message);
+                logger.error(err.message);
                 res.status(500).json({ error: 'Failed to check email in the database' });
             } else if (row) {
                 res.status(400).json({ error: 'User with this email already exists' });
@@ -27,7 +28,7 @@ const signUp = async (req, res) => {
                 const insertQuery = 'INSERT INTO users (login, email, password) VALUES (?, ?, ?)';
                 db.run(insertQuery, [login, email, hash_password], (err) => {
                     if (err) {
-                        console.error(err.message);
+                        logger.error(err.message);
                         res.status(500).json({ error: 'Failed to insert data into the database' });
                     } else {
                         res.sendStatus(200);
@@ -36,7 +37,7 @@ const signUp = async (req, res) => {
             }
         });
     } catch (e) {
-        console.log(e);
+        logger.log(e);
     }
 };
 
@@ -50,7 +51,7 @@ const signIn = async (req, res) => {
 
         db.get(getUserQuery, [email], async (err, row) => {
             if (err) {
-                console.error(err.message);
+                logger.error(err.message);
                 res.status(500).json({ error: 'Failed to fetch user data from the database' });
             } else if (!row) {
                 res.status(401).json({ error: 'User with this email does not exist' });
@@ -67,7 +68,7 @@ const signIn = async (req, res) => {
             }
         });
     } catch (e) {
-        console.log(e);
+        logger.log(e);
     }
 };
 

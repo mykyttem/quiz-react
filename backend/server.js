@@ -6,8 +6,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 // import
-const { initDatabase } = require('./config');
+const { initDatabase, logger } = require('./config');
 
 const { profile_CreateQuiz, getOwnQuizzes, edit_OwnQuizzes, update_OwnQuiz, delete_OwnQuiz } = require('./controllers/controller_profile');
 const { signUp, signIn } = require('./controllers/controller_auth');
@@ -33,5 +34,5 @@ app.post('/quizzes', quizzes)
 // listening port
 const port = 3000;
 app.listen(port, () => {
-    console.log(`listening on port ${port}`);
+    logger.info(`listening on port ${port}`);
 });

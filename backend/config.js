@@ -1,7 +1,11 @@
+// logger
+const winston = require('winston');
+const logger = winston.createLogger();
+
 // create and connect to database
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('database.db', sqlite3.OPEN_CREATE | sqlite3.OPEN_READWRITE, (err) => {
-    if (err) return console.error(err.message);
+    if (err) return logger.error(err.message);
 });
 
 
@@ -18,5 +22,6 @@ const initDatabase = () => {
 
 module.exports = {
     db,
-    initDatabase
+    initDatabase,
+    logger
 }

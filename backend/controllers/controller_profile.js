@@ -1,4 +1,5 @@
 const { db } = require('../config');
+const { logger } = require('../config');
 
 /*
     all profile-related components that can be accessed through the user's profile
@@ -20,7 +21,7 @@ const profile_CreateQuiz = async (req, res) => {
         const save_quiz = 'INSERT INTO quizzes(id_author, title, question, options) VALUES (?, ?, ?, ?)';
         await db.run(save_quiz, [author_id, title, JSON.stringify(questions), JSON.stringify(options)]);
     } catch (e) {
-        console.log(e);
+        logger.error(e);
     }
 };
 
@@ -50,7 +51,7 @@ const getOwnQuizzes = async (req, res) => {
             res.status(404).json({ error: 'Quizzes not found for the user' });
         }
     } catch (e) {
-        console.log(e);
+        logger.error(e);
     }
 };
 
@@ -63,7 +64,7 @@ const edit_OwnQuizzes = async (req, res) => {
         const getQuizQuery = 'SELECT * FROM quizzes WHERE id = ?';
         db.all(getQuizQuery, [id_quiz], async (err, row) => {
             if (err) {
-                console.error(err.message);
+                logger.error(err.message);
                 res.status(500).json({ error: 'Failed to fetch quiz data from the database' });
             } else {
                 // send data
@@ -71,7 +72,7 @@ const edit_OwnQuizzes = async (req, res) => {
             };
         });
     } catch (e) {
-        console.log(e);
+        logger.error(e);
     };
 };
 
@@ -90,14 +91,14 @@ const update_OwnQuiz = async (req, res) => {
         const update_quiz = 'UPDATE quizzes SET title = ?, question = ?, options = ? WHERE id = ?';
         await db.run(update_quiz, [title, JSON.stringify(questions), JSON.stringify(options), id_quiz], function (err) {
             if (err) {
-                console.error(err.message);
+                logger.error(err.message);
                 res.status(500).json({ error: 'Failed to update quiz data in the database' });
             } else {
                 return res.json({ success: true });
             }
         });
     } catch (e) {
-        console.log(e);
+        logger.error(e);
         res.status(500).json({ error: 'Failed to update quiz data in the database' });
     };
 };
@@ -110,14 +111,14 @@ const delete_OwnQuiz = async (req, res) => {
 
         await db.run(delete_quiz, [quiz_id], function (err) {
             if (err) {
-                console.error(err.message);
+                logger.error(err.message);
                 res.status(500).json({ error: 'Failed to delete quiz from the database' });
             } else {
                 return res.json({ success: true });
             }
         });
     } catch (e) {
-        console.log(e);
+        logger.error(e);
         res.status(500).json({ error: 'Failed to delete quiz from the database' });
     };
 };

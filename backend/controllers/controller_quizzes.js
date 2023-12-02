@@ -1,4 +1,5 @@
 const { db } = require('../config');
+const { logger } = require('../config');
 
 
 const quizzes = async (req, res) => {
@@ -48,7 +49,7 @@ const quizzes = async (req, res) => {
             res.status(404).json({ error: 'Quizzes not found' });
         }
     } catch (e) {
-        console.log(e);
+        logger.error(e);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
