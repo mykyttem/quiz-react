@@ -8,7 +8,7 @@ app.use(express.json());
 
 // import
 const { initDatabase } = require('./config');
-const { signUp, signIn, profile_CreateQuiz, getOwnQuizzes, quizzes } = require('./requestSender');
+const { signUp, signIn, profile_CreateQuiz, getOwnQuizzes, edit_OwnQuizzes, update_OwnQuiz, quizzes } = require('./requestSender');
 
 // connect to the DataBase
 initDatabase();
@@ -16,8 +16,12 @@ initDatabase();
 // requests
 app.post('/sign-up', signUp);
 app.post('/sign-in', signIn);
+
 app.post('/profile/create-quiz', profile_CreateQuiz);
 app.post('/profile/own-quizzes', getOwnQuizzes);
+app.post('/profile/own-quizzes/edit/:quizId', edit_OwnQuizzes);
+app.post('/profile/own-quizzes/update/:quizId', update_OwnQuiz);
+
 app.post('/quizzes', quizzes)
 
 

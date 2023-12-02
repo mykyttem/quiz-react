@@ -9,6 +9,7 @@
     margin-right: 16px;
     margin-bottom: 16px;
     transition: transform 0.3s ease;
+    cursor: pointer;
     
 
     &:hover {
@@ -31,3 +32,9 @@
     display: flex;
     flex-wrap: wrap;
 }  
+
+
+.no-underline {
+    text-decoration: none;
+    color: inherit; 
+}

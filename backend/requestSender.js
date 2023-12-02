@@ -122,6 +122,54 @@ const getOwnQuizzes = async (req, res) => {
 }
 
 
+const edit_OwnQuizzes = async (req, res) => {
+    try {
+        const id_quiz = req.body.quizId;
+
+        // GET info about quiz
+        const getQuizQuery = 'SELECT * FROM quizzes WHERE id = ?';
+        db.all(getQuizQuery, [id_quiz], async (err, row) => {
+            if (err) {
+                console.error(err.message);
+                res.status(500).json({ error: 'Failed to fetch quiz data from the database' });
+            } else {
+                // send data
+                res.status(200).json({ row: row });
+            };
+        });
+    } catch (e) {
+        console.log(e);
+    };
+};
+
+
+const update_OwnQuiz = async (req, res) => {
+    try {
+        // get data
+        const data = req.body;
+
+        const id_quiz = data.quizId;
+        const title = data.title;
+        const questions = data.question;
+        const options = data.options;
+
+        // UPDATE
+        const update_quiz = 'UPDATE quizzes SET title = ?, question = ?, options = ? WHERE id = ?';
+        await db.run(update_quiz, [title, JSON.stringify(questions), JSON.stringify([options]), id_quiz], function (err) {
+            if (err) {
+                console.error(err.message);
+                res.status(500).json({ error: 'Failed to update quiz data in the database' });
+            } else {
+                return res.json({ success: true });
+            }
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: 'Failed to update quiz data in the database' });
+    };
+};
+
+
 const quizzes = async (req, res) => {
     try {
         // get all quizzes users 
@@ -181,5 +229,7 @@ module.exports = {
     signIn,
     profile_CreateQuiz,
     getOwnQuizzes,
+    edit_OwnQuizzes,
+    update_OwnQuiz,
     quizzes
 };

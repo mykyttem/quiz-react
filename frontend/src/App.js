@@ -7,6 +7,7 @@ import Profile from './profile';
 import CreateQuiz from './create_quiz';
 import OwnQuizzes from './own_quizzes';
 import Quizzes from './users_quizzes';
+import EditOwnQuizzes from './edit_own_quizzes';
 
 
 function App() {
@@ -43,7 +44,8 @@ function App() {
 
             <Route exact path='/profile' component={Profile} />
             <Route path='/profile/create-quiz' component={CreateQuiz} />
-            <Route path='/profile/own-quizzes' component={OwnQuizzes} />
+            <Route exact path='/profile/own-quizzes' component={OwnQuizzes} />
+            <Route path='/profile/own-quizzes/edit/:quizId' component={EditOwnQuizzes} />
 
             <Route path='/quizzes' component={Quizzes} />
           </nav>
