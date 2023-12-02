@@ -10,7 +10,9 @@ const CreateQuiz = () => {
     const user_id = sessionStorage.getItem('user_id');
 
     // save values
-    const [questions, setQuestions] = useState([{ question: '', options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'] }]);
+    const [questions, setQuestions] = useState([
+        { question: '', options: [{ value: 'Option 1', isCorrect: false }, { value: 'Option 2', isCorrect: false }, { value: 'Option 3', isCorrect: false }, { value: 'Option 4', isCorrect: false }] }
+    ]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [title, setTitle] = useState('');
 
@@ -20,18 +22,28 @@ const CreateQuiz = () => {
         setCurrentQuestionIndex(questions.length);
     };
 
-    const handleOptionChange = (questionIndex, optionIndex, value) => {
+    // option change
+    const handleOptionChange = (questionIndex, optionIndex, value, isCorrect) => {
         const newQuestions = [...questions];
-        newQuestions[questionIndex].options[optionIndex] = value;
+        newQuestions[questionIndex].options[optionIndex] = { value, isCorrect };
+        setQuestions(newQuestions);
+    };
+    
+    // change true or false for option
+    const handleOptionCorrectnessChange = (questionIndex, optionIndex) => {
+        const newQuestions = [...questions];
+        newQuestions[questionIndex].options[optionIndex].isCorrect = !newQuestions[questionIndex].options[optionIndex].isCorrect;
         setQuestions(newQuestions);
     };
 
+    // change question
     const handleQuestionChange = (questionIndex, value) => {
         const newQuestions = [...questions];
         newQuestions[questionIndex].question = value;
         setQuestions(newQuestions);
-    };
+    };  
 
+    // send for server
     const handleSubmit = async () => {
         try {
             // get question and answers from all blocks questions
@@ -46,34 +58,43 @@ const CreateQuiz = () => {
             
             // Redirect to profile
             // FIXME
-            history.push('/profile');
+            history.push('/profile/own-quizzes');
             window.location.reload();
         } catch (error) {
             console.error('Error submitting quiz:', error);
         }
     };
 
+
     return (
         <div className="quiz-container">
-            <input type="text" className="title-quiz" placeholder="title quiz..." onChange={(e) => setTitle(e.target.value)}/>
-            {questions.map((q, index) => (
-                <div key={index} className={`question-block ${index === currentQuestionIndex ? 'active' : ''}`}>
+            <input type="text" className="title-quiz" placeholder="title quiz..." onChange={(e) => setTitle(e.target.value)} required/>
+            {questions.map((q, questionIndex) => (
+                <div key={questionIndex} className={`question-block ${questionIndex === currentQuestionIndex ? 'active' : ''}`} required>
 
                     <input
                         type="text"
                         className="question-input"
-                        placeholder={`Type your question ${index + 1}...`}
-                        onChange={(e) => handleQuestionChange(index, e.target.value)}
+                        placeholder={`Type your question ${questionIndex + 1}...`}
+                        onChange={(e) => handleQuestionChange(questionIndex, e.target.value)}
                         value={q.question}
                     />
                     <div className="options-container">
                         {q.options.map((option, optionIndex) => (
-                            <div
-                                key={optionIndex}
-                                className="option-card"
-                                onClick={() => handleOptionChange(index, optionIndex, prompt(`Enter new option for question ${index + 1}:`, option))}
-                            >
-                                {option}
+                            <div key={optionIndex} className="option-card">
+                                <input
+                                    type="text"
+                                    className="option-input"
+                                    placeholder={`Enter option ${optionIndex + 1}...`}
+                                    value={option.value}
+                                    onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value, option.isCorrect)}
+                                />
+                                <button
+                                    className={`correctness-button ${option.isCorrect ? 'correct' : 'incorrect'}`}
+                                    onClick={() => handleOptionCorrectnessChange(questionIndex, optionIndex)}
+                                >
+                                    {option.isCorrect ? '✓' : '✗'}
+                                </button>
                             </div>
                         ))}
                     </div>

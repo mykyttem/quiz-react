@@ -88,7 +88,7 @@ const update_OwnQuiz = async (req, res) => {
 
         // UPDATE
         const update_quiz = 'UPDATE quizzes SET title = ?, question = ?, options = ? WHERE id = ?';
-        await db.run(update_quiz, [title, JSON.stringify(questions), JSON.stringify([options]), id_quiz], function (err) {
+        await db.run(update_quiz, [title, JSON.stringify(questions), JSON.stringify(options), id_quiz], function (err) {
             if (err) {
                 console.error(err.message);
                 res.status(500).json({ error: 'Failed to update quiz data in the database' });

@@ -26,8 +26,10 @@ const EditOwnQuizzes = () => {
     const [questions, setQuestions] = useState(['']);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [title, setTitle] = useState('');
-    const [options, setOptions] = useState(['Option 1', 'Option 2', 'Option 3', 'Option 4']);
-
+    const [options, setOptions] = useState([
+        [{ value: 'Option 1', isCorrect: false }, { value: 'Option 2', isCorrect: false }, { value: 'Option 3', isCorrect: false }, { value: 'Option 4', isCorrect: false }]
+    ]);
+      
 
     // when loading the page
     useEffect(() => {
@@ -35,43 +37,59 @@ const EditOwnQuizzes = () => {
             try {
                 // send id quiz
                 const response = await axios.post('/profile/own-quizzes/edit/:quizId', { quizId });
-
-                // get quizzes user 
+    
+                // get quizzes user
                 setInfoQuiz(response.data.row);
-
+    
                 // sets
                 const initialQuestions = JSON.parse(response.data.row[0].question);
                 setQuestions(initialQuestions);
-                
-                const initialOptions = JSON.parse(response.data.row[0].options)[0];
+    
+                const initialOptions = JSON.parse(response.data.row[0].options).map((options) => options);
                 setOptions(initialOptions);
-                
+    
                 setTitle(response.data.row[0].title);
             } catch (error) {
                 console.error(`Error fetching quizzes: ${error}`);
             }
         };
-
+    
         fetchQuizzes();
-    }, [quizId]);    
-
-
+    }, [quizId]);
+    
 
     // add question
     const handleAddQuestion = () => {
-        setQuestions([...questions, { question: '', options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'] }]);
+        setQuestions([...questions, '']);
+        setOptions((prevOptions) => [
+          ...prevOptions,
+          [
+            { value: 'Option 1', isCorrect: false },
+            { value: 'Option 2', isCorrect: false },
+            { value: 'Option 3', isCorrect: false },
+            { value: 'Option 4', isCorrect: false },
+          ],
+        ]);
         setCurrentQuestionIndex(questions.length);
     };
 
+
     // change option
-    const handleOptionChange = (optionIndex, value) => {
-        setOptions(prevOptions => {
-            const newOptions = [...prevOptions];
-            newOptions[optionIndex] = value;
-            return newOptions;
+    const handleOptionChange = (questionIndex, optionIndex, value) => {
+        setOptions((prevOptions) => {
+          const newOptions = [...prevOptions];
+          newOptions[questionIndex][optionIndex] = { ...newOptions[questionIndex][optionIndex], value };
+          return newOptions;
         });
     };
-    
+      
+    // change true or false for option
+    const handleOptionCorrectnessChange = (questionIndex, optionIndex) => {
+        const newOptions = [...options];
+        newOptions[questionIndex][optionIndex].isCorrect = !newOptions[questionIndex][optionIndex].isCorrect;
+        setOptions(newOptions);
+    };
+
     // change question
     const handleQuestionChange = (questionIndex, value) => {
         setQuestions(prevQuestions => {
@@ -80,6 +98,7 @@ const EditOwnQuizzes = () => {
             return newQuestions;
         });
     };  
+
 
     // sumbit and send new data for UPDATE
     const UpdateSubmit = async () => {
@@ -118,52 +137,60 @@ const EditOwnQuizzes = () => {
     };
     
     
-    // FIXME: show all options for questions
     return (
         <div className="quiz-container">
-            {info_quiz.map((quiz, quizIndex) => (
-                <div key={quizIndex}>
-                    <input
-                        type="text"
-                        className="title-quiz"
-                        placeholder="title quiz..."
-                        onChange={(e) => setTitle(e.target.value)}
-                        value={title}
-                    />
-                    
-                    {questions.map((question, index) => (
-                        <div key={index} className={`question-block ${index === currentQuestionIndex ? 'active' : ''}`}>
-                            <input
-                                type="text"
-                                className="question-input"
-                                placeholder={`Type your question ${index + 1}...`}
-                                onChange={(e) => handleQuestionChange(index, e.target.value)}
-                                value={question}
-                            />
-                            <div className="options-container">
-                                {options.map((option, optionIndex) => (
-                                    <div
-                                        key={optionIndex}
-                                        className="option-card"
-                                        onClick={() => handleOptionChange(optionIndex, prompt(`Enter new option for question ${index + 1}:`, option))}
-                                    >
-                                    {option}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+          {info_quiz.map((quizIndex) => (
+            <div key={quizIndex}>
+              <input
+                type="text"
+                className="title-quiz"
+                placeholder="title quiz..."
+                onChange={(e) => setTitle(e.target.value)}
+                value={title}
+              />
+              
+              {questions.map((question, index) => (
+                <div key={index} className={`question-block ${index === currentQuestionIndex ? 'active' : ''}`}>
+                  <input
+                    type="text"
+                    className="question-input"
+                    placeholder={`Type your question ${index + 1}...`}
+                    onChange={(e) => handleQuestionChange(index, e.target.value)}
+                    value={question}
+                  />
+                  <div className="options-container">
+                    {options[index].map((option, optionIndex) => (
+                      <div key={optionIndex} className={`option-card ${option.isCorrect ? 'correct-option' : ''}`}>
+                        <input
+                          type="text"
+                          className="option-input"
+                          placeholder={`Enter option ${optionIndex + 1}...`}
+                          value={option.value}
+                          onChange={(e) => handleOptionChange(index, optionIndex, e.target.value)}
+                        />
+                        <button
+                          className={`correctness-button ${option.isCorrect ? 'correct' : 'incorrect'}`}
+                          onClick={() => handleOptionCorrectnessChange(index, optionIndex)}
+                        >
+                          {option.isCorrect ? '✓' : '✗'}
+                        </button>
+                      </div>
                     ))}
-                    <button className="submit-button" type="button" onClick={UpdateSubmit}>
-                        Submit
-                    </button>
-                    <button className="next-question-button" type="button" onClick={handleAddQuestion}>
-                        Add Question
-                    </button>
-                    <button className="delete-quiz-button" type="button" onClick={DeleteQuiz}>
-                        Delete
-                    </button>
+                  </div>
                 </div>
-            ))}
+              ))}
+      
+              <button className="submit-button" type="button" onClick={UpdateSubmit}>
+                Submit
+              </button>
+              <button className="next-question-button" type="button" onClick={handleAddQuestion}>
+                Add Question
+              </button>
+              <button className="delete-quiz-button" type="button" onClick={DeleteQuiz}>
+                Delete
+              </button>
+            </div>
+          ))}
         </div>
     );
 };
