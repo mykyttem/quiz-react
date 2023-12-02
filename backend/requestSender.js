@@ -170,6 +170,26 @@ const update_OwnQuiz = async (req, res) => {
 };
 
 
+const delete_OwnQuiz = async (req, res) => {
+    try {
+        const quiz_id = req.body.quizId;
+        const delete_quiz = 'DELETE FROM quizzes WHERE id = ?';
+
+        await db.run(delete_quiz, [quiz_id], function (err) {
+            if (err) {
+                console.error(err.message);
+                res.status(500).json({ error: 'Failed to delete quiz from the database' });
+            } else {
+                return res.json({ success: true });
+            }
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ error: 'Failed to delete quiz from the database' });
+    };
+};
+
+
 const quizzes = async (req, res) => {
     try {
         // get all quizzes users 
@@ -227,9 +247,12 @@ const quizzes = async (req, res) => {
 module.exports = {
     signUp,
     signIn,
+
     profile_CreateQuiz,
     getOwnQuizzes,
     edit_OwnQuizzes,
     update_OwnQuiz,
+    delete_OwnQuiz,
+
     quizzes
 };

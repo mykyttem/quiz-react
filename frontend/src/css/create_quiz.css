@@ -61,8 +61,32 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.next-button {
+.next-question-button {
     position: absolute;
     bottom: 0;
+    right: 0;
+}
+
+
+.delete-quiz-button, .delete-quiz-button {
+    color: #007bff;
+    background-color: #fff;
+    padding: 10px 20px;
+    border: 1px solid #007bff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.delete-quiz-button:hover {
+    background-color: #ff0000;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.delete-quiz-button {
+    position: absolute;
+    top: 0;
     right: 0;
 }

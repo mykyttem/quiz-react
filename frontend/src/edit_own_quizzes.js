@@ -48,7 +48,7 @@ const EditOwnQuizzes = () => {
                 
                 setTitle(response.data.row[0].title);
             } catch (error) {
-                console.error('Error fetching quizzes:', error);
+                console.error(`Error fetching quizzes: ${error}`);
             }
         };
 
@@ -99,7 +99,21 @@ const EditOwnQuizzes = () => {
             history.push('/profile/own-quizzes');
             window.location.reload();
         } catch (error) {
-            console.error('Error submitting quiz:', error);
+            console.error(`Error submitting quiz: ${error}`);
+        }
+    };
+
+
+    const DeleteQuiz = async () => {
+        try {
+            // send quiz Id for delete
+            await axios.post('/profile/own-quizzes/delete/:quizId', {quizId});
+
+            // reload
+            history.push('/profile/own-quizzes');
+            window.location.reload();
+        } catch (error) {
+            console.error(`Error delete quiz: ${error}`);
         }
     };
     
@@ -144,6 +158,9 @@ const EditOwnQuizzes = () => {
                     </button>
                     <button className="next-question-button" type="button" onClick={handleAddQuestion}>
                         Add Question
+                    </button>
+                    <button className="delete-quiz-button" type="button" onClick={DeleteQuiz}>
+                        Delete
                     </button>
                 </div>
             ))}
