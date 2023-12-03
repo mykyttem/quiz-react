@@ -11,8 +11,8 @@ import CreateQuiz from './profile/create_quiz';
 import OwnQuizzes from './profile/own_quizzes';
 import EditOwnQuizzes from './profile/edit_own_quizzes';
 
-import Quizzes from './quizzes';
-import StartQuiz from './start_quiz';
+import Quizzes from './quiz/quizzes';
+import StartQuiz from './quiz/start_quiz';
 
 
 function Page_notFound() {

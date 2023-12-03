@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'; 
 import axios from 'axios';
 
-import './css/start_quiz.css';
+import '../css/start_quiz.css';
 
 
 const StartQuiz = () => {
