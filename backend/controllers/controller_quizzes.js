@@ -73,11 +73,33 @@ const startQuiz = async (req, res) => {
         logger.error(e);
         res.status(500).json({ error: 'Internal server error' })
     }
+};
+
+
+const logicQuiz = async (req, res) => {
+    const id_quiz = req.body.quizId;
+
+    try {
+        const info_quiz = 'SELECT title, question, options FROM quizzes WHERE id = ?';
+        db.all(info_quiz, [id_quiz], async (err, row) => {
+            if (err) {
+                logger.error(err.message);
+                res.status(500).json({ error: 'Failed to fetch quiz data from the database' });
+            } else {
+                // send data
+                res.status(200).json({ row: row });
+            };
+        });
+    } catch (e) {
+        logger.error(e);
+        res.status(500).json({ error: 'Internal server error' })
+    }
 }
 
 
 // import for server
 module.exports = {
     quizzes,
-    startQuiz
+    startQuiz,
+    logicQuiz
 };

@@ -13,6 +13,7 @@ import EditOwnQuizzes from './profile/edit_own_quizzes';
 
 import Quizzes from './quiz/quizzes';
 import StartQuiz from './quiz/start_quiz';
+import LogicQuiz from './quiz/logic_quiz';
 
 
 function Page_notFound() {
@@ -71,7 +72,8 @@ function App() {
               <Route path='/profile/own-quizzes/edit/:quizId' component={EditOwnQuizzes} />
 
               <Route exact path='/quizzes' component={Quizzes} />
-              <Route path='/quizzes/start-quiz/:quizId' component={StartQuiz}/>
+              <Route exact path='/quizzes/start-quiz/:quizId' component={StartQuiz}/>
+              <Route path='/quizzes/start-quiz/:quizId/:title' component={LogicQuiz}/>
 
               <Route component={Page_notFound} />
             </Switch>
