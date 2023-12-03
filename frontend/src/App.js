@@ -9,8 +9,10 @@ import SignIn from './auth/sign_in';
 import Profile from './profile/profile';
 import CreateQuiz from './profile/create_quiz';
 import OwnQuizzes from './profile/own_quizzes';
-import Quizzes from './users_quizzes';
 import EditOwnQuizzes from './profile/edit_own_quizzes';
+
+import Quizzes from './quizzes';
+import StartQuiz from './start_quiz';
 
 
 function Page_notFound() {
@@ -68,7 +70,8 @@ function App() {
               <Route exact path='/profile/own-quizzes' component={OwnQuizzes} />
               <Route path='/profile/own-quizzes/edit/:quizId' component={EditOwnQuizzes} />
 
-              <Route path='/quizzes' component={Quizzes} />
+              <Route exact path='/quizzes' component={Quizzes} />
+              <Route path='/quizzes/start-quiz/:quizId' component={StartQuiz}/>
 
               <Route component={Page_notFound} />
             </Switch>

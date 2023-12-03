@@ -12,7 +12,7 @@ const { initDatabase, logger } = require('./config');
 
 const { profile_CreateQuiz, getOwnQuizzes, edit_OwnQuizzes, update_OwnQuiz, delete_OwnQuiz } = require('./controllers/controller_profile');
 const { signUp, signIn } = require('./controllers/controller_auth');
-const { quizzes } = require('./controllers/controller_quizzes');
+const { quizzes, startQuiz } = require('./controllers/controller_quizzes');
 
 
 // connect to the DataBase
@@ -29,6 +29,7 @@ app.post('/profile/own-quizzes/update/:quizId', update_OwnQuiz);
 app.post('/profile/own-quizzes/delete/:quizId', delete_OwnQuiz);
 
 app.post('/quizzes', quizzes)
+app.post('/quizzes/start-quiz/:quizId', startQuiz);
 
 
 // listening port

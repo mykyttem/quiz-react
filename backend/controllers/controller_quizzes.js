@@ -44,7 +44,7 @@ const quizzes = async (req, res) => {
             // send the response
             res.status(200).json({
                 row: quizzesWithLogins,
-            });
+            }); 
         } else {
             res.status(404).json({ error: 'Quizzes not found' });
         }
@@ -55,7 +55,29 @@ const quizzes = async (req, res) => {
 };
 
 
+const startQuiz = async (req, res) => {
+    const id_quiz = req.body.quizId;
+
+    try {
+        const info_quiz = 'SELECT title, question FROM quizzes WHERE id = ?';
+        db.all(info_quiz, [id_quiz], async (err, row) => {
+            if (err) {
+                logger.error(err.message);
+                res.status(500).json({ error: 'Failed to fetch quiz data from the database' });
+            } else {
+                // send data
+                res.status(200).json({ row: row });
+            };
+        });
+    } catch (e) {
+        logger.error(e);
+        res.status(500).json({ error: 'Internal server error' })
+    }
+}
+
+
 // import for server
 module.exports = {
-    quizzes
+    quizzes,
+    startQuiz
 };
