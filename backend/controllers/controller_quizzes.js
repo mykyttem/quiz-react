@@ -2,6 +2,10 @@ const { db } = require('../config');
 const { logger } = require('../config');
 
 
+const msg_internalServer = 'Internal server error';
+const msg_failed_db = 'Failed to fetch quiz data from the database';
+
+
 const quizzes = async (req, res) => {
     try {
         // get all quizzes users        
@@ -50,7 +54,7 @@ const quizzes = async (req, res) => {
         }
     } catch (e) {
         logger.error(e);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: msg_internalServer });
     }
 };
 
@@ -63,7 +67,7 @@ const startQuiz = async (req, res) => {
         db.all(info_quiz, [id_quiz], async (err, row) => {
             if (err) {
                 logger.error(err.message);
-                res.status(500).json({ error: 'Failed to fetch quiz data from the database' });
+                res.status(500).json({ error: msg_failed_db });
             } else {
                 // send data
                 res.status(200).json({ row: row });
@@ -71,7 +75,7 @@ const startQuiz = async (req, res) => {
         });
     } catch (e) {
         logger.error(e);
-        res.status(500).json({ error: 'Internal server error' })
+        res.status(500).json({ error: msg_internalServer })
     }
 };
 
@@ -84,7 +88,7 @@ const logicQuiz = async (req, res) => {
         db.all(info_quiz, [id_quiz], async (err, row) => {
             if (err) {
                 logger.error(err.message);
-                res.status(500).json({ error: 'Failed to fetch quiz data from the database' });
+                res.status(500).json({ error: msg_failed_db });
             } else {
                 // send data
                 res.status(200).json({ row: row });
@@ -92,14 +96,50 @@ const logicQuiz = async (req, res) => {
         });
     } catch (e) {
         logger.error(e);
-        res.status(500).json({ error: 'Internal server error' })
+        res.status(500).json({ error: msg_internalServer })
     }
-}
+};
+
+
+const logicQuiz_saveResults = async (req, res) => {
+    const { answers, user_id, quizId } = req.body;
+
+    
+    try {
+        const array = Object.values(answers).flat();
+        
+        const groupedData = array.reduce((acc, item) => {
+            const { Question, Option } = item;
+
+            // check whether such a question already exists in the object
+            if (acc[Question]) {
+                // If so, then add this response to the existing response array
+                acc[Question].push(Option);
+            } else {
+                // If not, then we create a new array of answers for this question
+                acc[Question] = [Option];
+            }
+
+            return acc;
+        }, {});
+
+        // save
+        const save = 'INSERT INTO results(id_user, id_quiz, answers) VALUES (?, ?, ?)';
+        await db.run(save, [user_id, quizId,  JSON.stringify(groupedData)]);
+
+        res.status(200);
+    } catch (e) {
+        logger.error(e);
+        res.status(500).json({ error: msg_internalServer })
+    }
+};
 
 
 // import for server
 module.exports = {
     quizzes,
     startQuiz,
-    logicQuiz
+
+    logicQuiz,
+    logicQuiz_saveResults
 };

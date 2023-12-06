@@ -10,13 +10,34 @@ const db = new sqlite3.Database('database.db', sqlite3.OPEN_CREATE | sqlite3.OPE
 
 
 // create table if not
-const sql_table_users = 'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, login TEXT, email TEXT, password TEXT)';
-const sql_table_quizzes = 'CREATE TABLE IF NOT EXISTS quizzes(id INTEGER PRIMARY KEY, id_author INTEGER, title TEXT, question TEXT, options TEXT)';
+const users = `CREATE TABLE IF NOT EXISTS users(
+                    id INTEGER PRIMARY KEY, 
+                    login TEXT, 
+                    email TEXT, 
+                    password TEXT
+                )`;
+const quizzes = `CREATE TABLE IF NOT EXISTS quizzes(
+                    id INTEGER PRIMARY KEY, 
+                    id_author INTEGER, 
+                    title TEXT, 
+                    question TEXT, 
+                    options TEXT,
+                    FOREIGN KEY (id_author) REFERENCES users(id)
+                )`;
+const results = `CREATE TABLE IF NOT EXISTS results(
+                    id INTEGER PRIMARY KEY, 
+                    id_user INTEGER, 
+                    id_quiz INTEGER, 
+                    answers JSONB,
+                    FOREIGN KEY (id_user) REFERENCES users(id),
+                    FOREIGN KEY (id_quiz) REFERENCES users(id)
+                )`;
 
 const initDatabase = () => {
     // run
-    db.run(sql_table_users);
-    db.run(sql_table_quizzes);
+    db.run(users);
+    db.run(quizzes);
+    db.run(results);
 }
  
 
