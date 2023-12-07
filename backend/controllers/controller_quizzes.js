@@ -1,21 +1,13 @@
 const { db } = require('../config');
 const { logger } = require('../config');
-
-
-const msg_internalServer = 'Internal server error';
-const msg_failed_db = 'Failed to fetch quiz data from the database';
+const { msg_failed_db, msg_internalServer, executeQuery, sendResponse } = require('./controller_utils');
 
 
 const quizzes = async (req, res) => {
     try {
         // get all quizzes users        
-        const get_Quizzes = 'SELECT * FROM quizzes';
-        const quizzesRows = await new Promise((resolve, reject) => {
-            db.all(get_Quizzes, (err, rows) => {
-                if (err) reject(err);
-                resolve(rows);
-            });
-        });
+        const getQuizzes = 'SELECT * FROM quizzes';
+        const quizzesRows = await executeQuery(db, getQuizzes, [], 'all');
 
         if (quizzesRows.length > 0) {
             // Fetch author logins
@@ -23,13 +15,8 @@ const quizzes = async (req, res) => {
 
             const placeholders = authorIds.map(() => '?').join(',');
             const getLogin_author = 'SELECT id, login FROM users WHERE id IN (' + placeholders + ')';
-            
-            const authorRows = await new Promise((resolve, reject) => {
-                db.all(getLogin_author, authorIds, (err, rows) => {
-                    if (err) reject(err);
-                    resolve(rows);
-                });
-            });
+            const authorRows = await executeQuery(db, getLogin_author, authorIds, 'all');  
+          
 
             // Create a mapping of author IDs to logins for easier lookup
             const authorLoginMap = {};
@@ -46,58 +33,39 @@ const quizzes = async (req, res) => {
             });
 
             // send the response
-            res.status(200).json({
-                row: quizzesWithLogins,
-            }); 
+            sendResponse(res, 200, { row: quizzesWithLogins });
         } else {
-            res.status(404).json({ error: 'Quizzes not found' });
+            sendResponse(res, 404, { error: 'Quizzes not found' });
         }
     } catch (e) {
         logger.error(e);
-        res.status(500).json({ error: msg_internalServer });
+        sendResponse(res, 500, { error: msg_internalServer });
+    }
+};
+
+
+const getQuizInfo = async (req, res, query, params) => {
+    try {
+      const rows = await executeQuery(db, query, params, 'all');
+      sendResponse(res, 200, { row: rows });
+    } catch (e) {
+      logger.error(e.message);
+      sendResponse(res, 500, { error: msg_failed_db });
     }
 };
 
 
 const startQuiz = async (req, res) => {
     const id_quiz = req.body.quizId;
-
-    try {
-        const info_quiz = 'SELECT title, question FROM quizzes WHERE id = ?';
-        db.all(info_quiz, [id_quiz], async (err, row) => {
-            if (err) {
-                logger.error(err.message);
-                res.status(500).json({ error: msg_failed_db });
-            } else {
-                // send data
-                res.status(200).json({ row: row });
-            };
-        });
-    } catch (e) {
-        logger.error(e);
-        res.status(500).json({ error: msg_internalServer })
-    }
+    const info_quiz = 'SELECT title, question FROM quizzes WHERE id = ?';
+    getQuizInfo(req, res, info_quiz, [id_quiz]);
 };
 
 
 const logicQuiz = async (req, res) => {
     const id_quiz = req.body.quizId;
-
-    try {
-        const info_quiz = 'SELECT title, question, options FROM quizzes WHERE id = ?';
-        db.all(info_quiz, [id_quiz], async (err, row) => {
-            if (err) {
-                logger.error(err.message);
-                res.status(500).json({ error: msg_failed_db });
-            } else {
-                // send data
-                res.status(200).json({ row: row });
-            };
-        });
-    } catch (e) {
-        logger.error(e);
-        res.status(500).json({ error: msg_internalServer })
-    }
+    const info_quiz = 'SELECT title, question, options FROM quizzes WHERE id = ?';
+    getQuizInfo(req, res, info_quiz, [id_quiz]);
 };
 
 
@@ -110,29 +78,21 @@ const logicQuiz_saveResults = async (req, res) => {
         
         const groupedData = array.reduce((acc, item) => {
             const { Question, Option } = item;
-
-            // check whether such a question already exists in the object
-            if (acc[Question]) {
-                // If so, then add this response to the existing response array
-                acc[Question].push(Option);
-            } else {
-                // If not, then we create a new array of answers for this question
-                acc[Question] = [Option];
-            }
-
+            acc[Question] = acc[Question] ? [...acc[Question], Option] : [Option];
             return acc;
-        }, {});
+          }, {});
 
         // save
         const save = 'INSERT INTO results(id_user, id_quiz, answers) VALUES (?, ?, ?)';
-        await db.run(save, [user_id, quizId,  JSON.stringify(groupedData)]);
+        await db.run(save, [user_id, quizId, JSON.stringify(groupedData)]);
 
-        res.status(200);
+        sendResponse(res, 200, {});
     } catch (e) {
         logger.error(e);
-        res.status(500).json({ error: msg_internalServer })
+        sendResponse(res, 500, { error: msg_internalServer });
     }
 };
+
 
 
 // import for server

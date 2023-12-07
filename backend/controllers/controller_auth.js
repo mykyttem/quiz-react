@@ -1,43 +1,36 @@
 const { db } = require('../config');
-const bcrypt = require("bcrypt")
 const { logger } = require('../config');
+const { msg_internalServer, executeQuery, sendResponse } = require('./controller_utils');
+
+
+const bcrypt = require("bcrypt")
 
 
 const signUp = async (req, res) => {
-    // sign up
     try { 
         // get data user
         const { login, email, password } = req.body;
 
-        // hash password
-        const saltRounds = 10;
-
         // verification or email is used
         const check_email = 'SELECT email FROM users WHERE email = ?';
+        const existingUser = await executeQuery(db, check_email, [email]);
 
-        db.get(check_email, [email], async (err, row) => {
-            if (err) {
-                logger.error(err.message);
-                res.status(500).json({ error: 'Failed to check email in the database' });
-            } else if (row) {
-                res.status(400).json({ error: 'User with this email already exists' });
-            } else {
-                const hash_password = await bcrypt.hash(password, saltRounds);
-        
-                // save in database
-                const insertQuery = 'INSERT INTO users (login, email, password) VALUES (?, ?, ?)';
-                db.run(insertQuery, [login, email, hash_password], (err) => {
-                    if (err) {
-                        logger.error(err.message);
-                        res.status(500).json({ error: 'Failed to insert data into the database' });
-                    } else {
-                        res.sendStatus(200);
-                    }
-                });
-            }
-        });
+        if (existingUser) {
+            sendResponse(res, 400, { error: 'User with this email already exists' });
+        } else {
+            // hash password
+            const saltRounds = 10;
+            const hash_password = await bcrypt.hash(password, saltRounds);
+    
+            // save in database
+            const insertQuery = 'INSERT INTO users (login, email, password) VALUES (?, ?, ?)';
+            await db.run(insertQuery, [login, email, hash_password]);
+
+            sendResponse(res, 200, {});
+        } 
     } catch (e) {
-        logger.log(e);
+        logger.error(e);
+        sendResponse(res, 500, { error: 'Failed to sign up' });
     }
 };
 
@@ -48,27 +41,22 @@ const signIn = async (req, res) => {
 
         // get info user from DB by email
         const getUserQuery = 'SELECT * FROM users WHERE email = ?';
+        const user = await executeQuery(db, getUserQuery, [email]);
 
-        db.get(getUserQuery, [email], async (err, row) => {
-            if (err) {
-                logger.error(err.message);
-                res.status(500).json({ error: 'Failed to fetch user data from the database' });
-            } else if (!row) {
-                res.status(401).json({ error: 'User with this email does not exist' });
+        if (!user) {
+            sendResponse(res, 401, { error: 'User with this email does not exist' });
+        } else {
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+            
+            if (isPasswordValid) {
+                sendResponse(res, 200, { user_login: user.login, user_id: user.id });
             } else {
-                // Comparison of the password stored in the database with the entered password
-                const bcrypt = require("bcrypt");
-                const isPasswordValid = await bcrypt.compare(password, row.password);
-                if (isPasswordValid) {
-                    res.status(200).json({ user_login: row.login, user_id: row.id }); 
-                } else {
-                    // else password no valid
-                    res.status(401).json({ error: 'Incorrect password' });
-                }
+                sendResponse(res, 401, { error: 'Incorrect password' });
             }
-        });
+        }
     } catch (e) {
-        logger.log(e);
+        logger.error(e);
+        sendResponse(res, 500, { error: msg_internalServer });
     }
 };
 

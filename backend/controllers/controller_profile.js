@@ -1,5 +1,6 @@
 const { db } = require('../config');
 const { logger } = require('../config');
+const { msg_failed_db, executeQuery, sendResponse } = require('./controller_utils');
 
 /*
     all profile-related components that can be accessed through the user's profile
@@ -9,9 +10,8 @@ const { logger } = require('../config');
 const profile_CreateQuiz = async (req, res) => {
     try {
         // get json data
-        const data = req.body; 
-
         // get all questions in one list and options
+        const data = req.body; 
         const author_id = data[0].user_id;
         const title = data[0].title;
         const questions = data.map(item => item.question);
@@ -27,28 +27,17 @@ const profile_CreateQuiz = async (req, res) => {
 
 
 const getOwnQuizzes = async (req, res) => {
-    try {
-        // get id user
-        const user_id = req.body.user_id;
-
-
+    try { 
         // Fetch quizzes for the user
+        const user_id = req.body.user_id;
         const getQuizzes_user = 'SELECT * FROM quizzes WHERE id_author = ?';
-        const quizzesRow = await new Promise((resolve, reject) => {
-            db.all(getQuizzes_user, [user_id], (err, row) => {
-                if (err) reject(err);
-                resolve(row);
-            });
-        });
-
+        const quizzesRow = await executeQuery(db, getQuizzes_user, [user_id], 'all'); 
+              
         // Check if quizzes exist for the user
         if (quizzesRow) {
-            // Send the response
-            res.status(200).json({
-                row: quizzesRow
-            });
+            sendResponse(res, 200, { row: quizzesRow });
         } else {
-            res.status(404).json({ error: 'Quizzes not found for the user' });
+            sendResponse(res, 404, { error: 'Quizzes not found for the user' });
         }
     } catch (e) {
         logger.error(e);
@@ -56,24 +45,23 @@ const getOwnQuizzes = async (req, res) => {
 };
 
 
-const edit_OwnQuizzes = async (req, res) => {
+const getQuizInfo = async (res, id_quiz, query) => {
     try {
-        const id_quiz = req.body.quizId;
-
-        // GET info about quiz
-        const getQuizQuery = 'SELECT * FROM quizzes WHERE id = ?';
-        db.all(getQuizQuery, [id_quiz], async (err, row) => {
-            if (err) {
-                logger.error(err.message);
-                res.status(500).json({ error: 'Failed to fetch quiz data from the database' });
-            } else {
-                // send data
-                res.status(200).json({ row: row });
-            };
-        });
+      const row = await executeQuery(db, query, [id_quiz], 'all');
+      sendResponse(res, 200, { row: row });
     } catch (e) {
-        logger.error(e);
-    };
+      logger.error(e);
+      sendResponse(res, 500, { error: msg_failed_db });
+    }
+};
+  
+
+const edit_OwnQuizzes = async (req, res) => {
+    const id_quiz = req.body.quizId;
+
+    // GET info about quiz
+    const getQuizQuery = 'SELECT * FROM quizzes WHERE id = ?';
+    getQuizInfo(res, id_quiz, getQuizQuery);
 };
 
 
@@ -89,17 +77,12 @@ const update_OwnQuiz = async (req, res) => {
 
         // UPDATE
         const update_quiz = 'UPDATE quizzes SET title = ?, question = ?, options = ? WHERE id = ?';
-        await db.run(update_quiz, [title, JSON.stringify(questions), JSON.stringify(options), id_quiz], function (err) {
-            if (err) {
-                logger.error(err.message);
-                res.status(500).json({ error: 'Failed to update quiz data in the database' });
-            } else {
-                return res.json({ success: true });
-            }
-        });
+        await db.run(update_quiz, [title, JSON.stringify(questions), JSON.stringify(options), id_quiz]);
+
+        sendResponse(res, 200, { success: true });
     } catch (e) {
         logger.error(e);
-        res.status(500).json({ error: 'Failed to update quiz data in the database' });
+        sendResponse(res, 500, { error: 'Failed to update quiz data in the database' });
     };
 };
 
@@ -107,19 +90,14 @@ const update_OwnQuiz = async (req, res) => {
 const delete_OwnQuiz = async (req, res) => {
     try {
         const quiz_id = req.body.quizId;
-        const delete_quiz = 'DELETE FROM quizzes WHERE id = ?';
 
-        await db.run(delete_quiz, [quiz_id], function (err) {
-            if (err) {
-                logger.error(err.message);
-                res.status(500).json({ error: 'Failed to delete quiz from the database' });
-            } else {
-                return res.json({ success: true });
-            }
-        });
+        const delete_quiz = 'DELETE FROM quizzes WHERE id = ?';
+        await db.run(delete_quiz, [quiz_id]);
+
+        sendResponse(res, 200, { success: true });
     } catch (e) {
         logger.error(e);
-        res.status(500).json({ error: 'Failed to delete quiz from the database' });
+        sendResponse(res, 500, { error: 'Failed to delete quiz from the database' });
     };
 };
 
