@@ -27,6 +27,10 @@ const Profile = () => {
         window.location.reload();
     }
 
+    const redirectPage_OwnResults = () => {
+        history.push("/profile/own-results");
+        window.location.reload();
+    }
 
     if (user_email && user_login) {
         return (
@@ -43,7 +47,8 @@ const Profile = () => {
                 
                 <h2>Quizzes</h2>
                 <button className="btn-quiz" onClick={redirectPage_CreateQuiz}>Create new quiz</button>
-                <button className="btn-quiz" onClick={redirectPage_OwnQuizzes}>My own quizzes</button>
+                <button className="btn-quiz" onClick={redirectPage_OwnQuizzes}>Own quizzes</button>
+                <button className="btn-quiz" onClick={redirectPage_OwnResults}>Own results</button>
             </div>
         );
     } else {

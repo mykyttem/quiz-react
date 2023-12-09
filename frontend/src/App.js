@@ -10,6 +10,7 @@ import Profile from './profile/profile';
 import CreateQuiz from './profile/create_quiz';
 import OwnQuizzes from './profile/own_quizzes';
 import EditOwnQuizzes from './profile/edit_own_quizzes';
+import OwnResult from './profile/own_results';
 
 import Quizzes from './quiz/quizzes';
 import StartQuiz from './quiz/start_quiz';
@@ -71,6 +72,7 @@ function App() {
               <Route path='/profile/create-quiz' component={CreateQuiz} />
               <Route exact path='/profile/own-quizzes' component={OwnQuizzes} />
               <Route path='/profile/own-quizzes/edit/:quizId' component={EditOwnQuizzes} />
+              <Route path='/profile/own-results' component={OwnResult} />
 
               <Route exact path='/quizzes' component={Quizzes} />
               <Route exact path='/quizzes/start-quiz/:quizId' component={StartQuiz} />

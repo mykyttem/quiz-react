@@ -102,11 +102,70 @@ const delete_OwnQuiz = async (req, res) => {
 };
 
 
+const getOwn_results = async (req, res) => {
+    try {
+        const id_user = req.body.user_id;
+        
+        // get ids complted quizzes from results
+        const ids_completedQuizzes = 'SELECT id_quiz, answers FROM results WHERE id_user = ?';
+        const idsRow = await executeQuery(db, ids_completedQuizzes, [id_user], 'all');
+        const ids = idsRow.map(row => row.id_quiz);
+ 
+        const placeholders = ids.map(() => '?').join(',');
+
+        // get quizzes 
+        const quizzesQuery = `SELECT id, title, question FROM quizzes WHERE id IN (${placeholders})`;
+        const quizzesRow = await executeQuery(db, quizzesQuery, ids, 'all');
+
+        const groupedData = {};
+
+        // grouped data by ID
+        ids.forEach(id => {
+            const quizData = quizzesRow.find(quiz => quiz.id === id);
+            const resultData = idsRow.find(result => result.id_quiz === id);
+
+            // pars
+            const answersObject = JSON.parse(resultData.answers);
+
+            // count for correct answers
+            let correctAnswersCount = 0;
+
+            for (const question in answersObject) {
+                if (answersObject.hasOwnProperty(question)) {
+                    const answers = answersObject[question];
+
+                    answers.forEach(answer => {
+                        if (answer.isCorrect) {
+                            correctAnswersCount++;
+                        }
+                    });
+                }
+            }
+
+            groupedData[id] = {
+                id: id,
+                title: quizData.title,
+                question: quizData.question,
+                countCorrect: correctAnswersCount
+            };
+        });
+
+
+        // send
+        sendResponse(res, 200, { row: groupedData });
+    } catch (e) {
+        logger.error(e);
+        sendResponse(res, 500, { error: 'Failed to get own results from the database' });
+    }
+}
+
+
 // import for server
 module.exports = {
     profile_CreateQuiz,
     getOwnQuizzes,
     edit_OwnQuizzes,
     update_OwnQuiz,
-    delete_OwnQuiz
+    delete_OwnQuiz,
+    getOwn_results
 };

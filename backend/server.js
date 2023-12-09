@@ -10,7 +10,7 @@ app.use(express.json());
 // import
 const { initDatabase, logger } = require('./config');
 
-const { profile_CreateQuiz, getOwnQuizzes, edit_OwnQuizzes, update_OwnQuiz, delete_OwnQuiz } = require('./controllers/controller_profile');
+const { profile_CreateQuiz, getOwnQuizzes, edit_OwnQuizzes, update_OwnQuiz, delete_OwnQuiz, getOwn_results } = require('./controllers/controller_profile');
 const { signUp, signIn } = require('./controllers/controller_auth');
 const { quizzes, startQuiz, logicQuiz, logicQuiz_saveResults, resultsQuiz, deleteResult } = require('./controllers/controller_quizzes');
 
@@ -27,6 +27,7 @@ const routes = [
     { path: '/profile/own-quizzes/edit/:quizId', controller: edit_OwnQuizzes, method: 'post' },
     { path: '/profile/own-quizzes/update/:quizId', controller: update_OwnQuiz, method: 'post' },
     { path: '/profile/own-quizzes/delete/:quizId', controller: delete_OwnQuiz, method: 'post' },
+    { path: '/profile/own-results', controller: getOwn_results, method: 'post' },
 
     { path: '/quizzes', controller: quizzes, method: 'post' },
     { path: '/quizzes/start-quiz/:quizId', controller: startQuiz, method: 'post' },
