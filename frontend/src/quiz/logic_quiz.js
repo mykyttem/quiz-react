@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; 
+import { useParams, useHistory } from 'react-router-dom'; 
 import axios from 'axios';
 
 import AnimatedPage from './AnimatedPage';
@@ -14,6 +14,8 @@ const LogicQuiz = () => {
         - 'selectedOptions': Keeps track of the selected options for each quiz question
         - save answers user in DB
     */
+
+    const history = useHistory();
 
     // get id quiz, from url
     const { quizId } = useParams();
@@ -96,10 +98,12 @@ const LogicQuiz = () => {
     const save_answers = async () => {
         try {
             await axios.post('/quizzes/start-quiz/:quizId/:title/save-results', { answers, user_id, quizId });
-        } catch (e) {
-            console.error(`Error save: ${save_answers}`);
-        }
 
+            history.push(`/quizzes/${quizId}/${user_id}/results`);
+            window.location.reload();
+        } catch (e) {
+            console.error(`Error save: ${e}`);
+        }
     };
 
 

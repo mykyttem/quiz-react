@@ -94,6 +94,44 @@ const logicQuiz_saveResults = async (req, res) => {
 };
 
 
+const resultsQuiz = async (req, res) => {
+    const {quizId, user_id} = req.body;
+
+    try {
+        // get from DB
+        const result = 'SELECT answers FROM results WHERE id_user = ? AND id_quiz = ?';
+        const quiz = 'SELECT title, question, options FROM quizzes WHERE id = ?';
+
+        const rows_results = await executeQuery(db, result, [quizId, user_id], 'all');
+        const rows_quiz = await executeQuery(db, quiz, [quizId], 'all');
+
+        // send values
+        res.status(200).json({
+            results: rows_results,
+            quiz: rows_quiz,
+        });
+    } catch (e) {
+        logger.error(e);
+        res.status(500).json({ error: msg_internalServer })
+    }
+};
+
+
+const deleteResult = async (req, res) => {
+    const {quizId, user_id} = req.body;
+
+    try {
+        // delete
+        const delete_result = 'DELETE FROM results WHERE id_quiz = ? AND id_user = ?';
+        await db.run(delete_result, [quizId, user_id]);
+
+        sendResponse(res, 200, {});
+    } catch (e) {
+        logger.error(e);
+        sendResponse(res, 500, {error: msg_internalServer})
+    }
+};
+
 
 // import for server
 module.exports = {
@@ -101,5 +139,7 @@ module.exports = {
     startQuiz,
 
     logicQuiz,
-    logicQuiz_saveResults
+    logicQuiz_saveResults,
+    resultsQuiz,
+    deleteResult
 };
