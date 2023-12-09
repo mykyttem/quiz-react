@@ -13,6 +13,7 @@ const LogicQuiz = () => {
         - 'quiz': Stores information about the loaded quiz
         - 'selectedOptions': Keeps track of the selected options for each quiz question
         - save answers user in DB
+        - redirect on page result 
     */
 
     const history = useHistory();
@@ -44,16 +45,11 @@ const LogicQuiz = () => {
 
         fetchQuiz();
     }, [quizId]);
-    
-
-
-    // ===== FIXME: GET ONLY FIRST QUESTION, second get error =======
 
     
     // Function that handles clicking on options in quiz questions.
     // It updates the selectedOptions state by adding or updating the selected option index for the corresponding question.
     const handleOptionClick = (questionIndex, optionIndex) => {
-        
         
         // Update the selectedOptions state when an option is clicked
         setSelectedOptions((prevState) => {
@@ -68,9 +64,9 @@ const LogicQuiz = () => {
         });
         
         // Extract the selected question and option for the clicked optionIndex
-        const selectedQuestion = JSON.parse(quiz[questionIndex].question)[questionIndex];
-        const selectedOption = JSON.parse(quiz[questionIndex].options)[questionIndex][optionIndex];
-        
+        const selectedQuestion = JSON.parse(quiz[0].question)[questionIndex]
+        const selectedOption = JSON.parse(quiz[0].options)[questionIndex][optionIndex];
+
         // Update the answers state when an option is clicked
         setAnswers((prevAnswers) => {
             const currentAnswers = prevAnswers[questionIndex] || [];
