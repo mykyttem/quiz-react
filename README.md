@@ -25,60 +25,111 @@ second console
 ```bash
 cd backend
 npm install
-npm start dev
+npm run dev
 ```
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
+---
+### Main functional
+* home page
+* nav bar
+* sign up, and sign in
+* profile, for creating and displaying own data
+* perform quizzes, checking own results
 
-### `npm run build`
+---
+### Folder and file architecture
+    quiz-react/
+    |-- backend/
+    |   |-- controllers/
+    |   |   |-- Controllerfiles.js
+    |   |
+    |   |-- config.js 
+    |   |
+    |   |-- server.js
+    |   |-- package.json
+    |
+    |
+    |-- frontend/
+    |   |-- public/
+    |   |
+    |   |-- src/
+    |   |   |-- auth/
+    |   |   |   |-- files
+    |   |   |   
+    |   |   |-- css/
+    |   |   |   |-- files for styles
+    |   |   |
+    |   |   |-- profile/
+    |   |   |   |-- files for profile
+    |   |   |   
+    |   |   |-- quiz/
+    |   |   |   |-- files for quizzes 
+    |   |   |
+    |   |   |-- App.js
+    |   |   |-- home.js
+    |   |   |-- штвуч.js
+    |   |   |
+    |   | 
+    |   |
+    |   |-- package.json
+    |   |
+    |
+    |-- .gitignore
+    |-- package.json
+    |-- README
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Backend 
+**For start backend, before that run the frontend**
+```cd backend```
+```npm run dev```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Technologies** 
+- framework -- express.js
+- database -- sqlite
+- logger -- winston
+- encryption -- bcrypt
 
-### `npm run eject`
+**Folder Structure**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Controllers:** Contains controllers that handle the logic for the backend routes. 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**config:** creating logger, database, sql (create tables, and init database) 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**server:** routes, init database, listend port
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### Frontend
+**Technologies**
+- asynchrony - axios
+- framework - express
+- animation - framer-motion
+- react
+- routers - react-dom, react-router-dom
 
-## Learn More
+**Folder Structure**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**src:** Contains the source code of the React app
+**Files in src**
+-- **auth:** files that concern authorization
+-- **css:** styles
+-- **profile:** files related to the user profile and what is in it
+-- **quiz:** everything related to the display, or the logic of passing the quiz
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+#### Demo
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
+![Home page](demo/home_page.png)
+![page not found](demo/page_not_found.png)
+![sign up](demo/sign_up.png)
+![sign in](demo/sign_in.png)
+![profile](demo/profile.png)
+![create quiz 1](demo/create_quiz_1.png)
+![create quiz 2](demo/create_quiz_2.png)
+![own quizzes](demo/own_quizzes.png)
+![quizzes](demo/quizzes.png)
+![start quiz](demo/start_quiz.png)
+![logic quiz](demo/logic_quiz.png)
+![result](demo/results_quiz.png)
