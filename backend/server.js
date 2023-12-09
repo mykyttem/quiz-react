@@ -18,22 +18,29 @@ const { quizzes, startQuiz, logicQuiz, logicQuiz_saveResults, resultsQuiz, delet
 // connect to the DataBase
 initDatabase();
 
-// requests
-app.post('/sign-up', signUp);
-app.post('/sign-in', signIn);
+const routes = [
+    { path: '/sign-up', controller: signUp, method: 'post' },
+    { path: '/sign-in', controller: signIn, method: 'post' },
 
-app.post('/profile/create-quiz', profile_CreateQuiz);
-app.post('/profile/own-quizzes', getOwnQuizzes);
-app.post('/profile/own-quizzes/edit/:quizId', edit_OwnQuizzes);
-app.post('/profile/own-quizzes/update/:quizId', update_OwnQuiz);
-app.post('/profile/own-quizzes/delete/:quizId', delete_OwnQuiz);
+    { path: '/profile/create-quiz', controller: profile_CreateQuiz, method: 'post' },
+    { path: '/profile/own-quizzes', controller: getOwnQuizzes, method: 'post' },
+    { path: '/profile/own-quizzes/edit/:quizId', controller: edit_OwnQuizzes, method: 'post' },
+    { path: '/profile/own-quizzes/update/:quizId', controller: update_OwnQuiz, method: 'post' },
+    { path: '/profile/own-quizzes/delete/:quizId', controller: delete_OwnQuiz, method: 'post' },
 
-app.post('/quizzes', quizzes)
-app.post('/quizzes/start-quiz/:quizId', startQuiz);
-app.post('/quizzes/start-quiz/:quizId/:title', logicQuiz);
-app.post('/quizzes/start-quiz/:quizId/:title/save-results', logicQuiz_saveResults);
-app.post('/quizzes/:quizId/:userId/results', resultsQuiz);
-app.post('/quizzes/:quizId/:userId/delete/results', deleteResult);
+    { path: '/quizzes', controller: quizzes, method: 'post' },
+    { path: '/quizzes/start-quiz/:quizId', controller: startQuiz, method: 'post' },
+    { path: '/quizzes/start-quiz/:quizId/:title', controller: logicQuiz, method: 'post' },
+    { path: '/quizzes/start-quiz/:quizId/:title/save-results', controller: logicQuiz_saveResults, method: 'post' },
+    { path: '/quizzes/:quizId/:userId/results', controller: resultsQuiz, method: 'post' },
+    { path: '/quizzes/:quizId/:userId/delete/results', controller: deleteResult, method: 'post' },
+];
+
+
+// request
+routes.forEach(({ path, controller, method }) => {
+    app[method](path, controller);
+});
 
 
 // listening port
