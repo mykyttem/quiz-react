@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import '../css/create_quiz.css';
+import AnimatedPage from '../quiz/AnimatedPage';
 
 
 const CreateQuiz = () => {
@@ -65,46 +66,48 @@ const CreateQuiz = () => {
 
     if (user_id) {
         return (
-            <div className="quiz-container">
-                <input type="text" className="title-quiz" placeholder="title quiz..." onChange={(e) => setTitle(e.target.value)} required/>
-                {questions.map((q, questionIndex) => (
-                    <div key={questionIndex} className={`question-block ${questionIndex === currentQuestionIndex ? 'active' : ''}`} required>
-    
-                        <input
-                            type="text"
-                            className="question-input"
-                            placeholder={`Type your question ${questionIndex + 1}...`}
-                            onChange={(e) => handleQuestionChange(questionIndex, e.target.value)}
-                            value={q.question}
-                        />
-                        <div className="options-container">
-                            {q.options.map((option, optionIndex) => (
-                                <div key={optionIndex} className="option-card">
-                                    <input
-                                        type="text"
-                                        className="option-input"
-                                        placeholder={`Enter option ${optionIndex + 1}...`}
-                                        value={option.value}
-                                        onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value, option.isCorrect)}
-                                    />
-                                    <button
-                                        className={`correctness-button ${option.isCorrect ? 'correct' : 'incorrect'}`}
-                                        onClick={() => handleOptionCorrectnessChange(questionIndex, optionIndex)}
-                                    >
-                                        {option.isCorrect ? '✓' : '✗'}
-                                    </button>
-                                </div>
-                            ))}
+            <AnimatedPage>
+                <div className="quiz-container">
+                    <input type="text" className="title-quiz" placeholder="title quiz..." onChange={(e) => setTitle(e.target.value)} required/>
+                    {questions.map((q, questionIndex) => (
+                        <div key={questionIndex} className={`question-block ${questionIndex === currentQuestionIndex ? 'active' : ''}`} required>
+        
+                            <input
+                                type="text"
+                                className="question-input"
+                                placeholder={`Type your question ${questionIndex + 1}...`}
+                                onChange={(e) => handleQuestionChange(questionIndex, e.target.value)}
+                                value={q.question}
+                            />
+                            <div className="options-container">
+                                {q.options.map((option, optionIndex) => (
+                                    <div key={optionIndex} className="option-card">
+                                        <input
+                                            type="text"
+                                            className="option-input"
+                                            placeholder={`Enter option ${optionIndex + 1}...`}
+                                            value={option.value}
+                                            onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value, option.isCorrect)}
+                                        />
+                                        <button
+                                            className={`correctness-button ${option.isCorrect ? 'correct' : 'incorrect'}`}
+                                            onClick={() => handleOptionCorrectnessChange(questionIndex, optionIndex)}
+                                        >
+                                            {option.isCorrect ? '✓' : '✗'}
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
-                <button className="submit-button" type="button" onClick={handleSubmit}>
-                    Submit
-                </button>
-                <button className="next-question-button" type="button" onClick={handleAddQuestion}>
-                    Add Question
-                </button>
-            </div>
+                    ))}
+                    <button className="submit-button" type="button" onClick={handleSubmit}>
+                        Submit
+                    </button>
+                    <button className="next-question-button" type="button" onClick={handleAddQuestion}>
+                        Add Question
+                    </button>
+                </div>
+            </AnimatedPage>
         );
     } else {
         return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
 import '../css/profile.css';
-
+import AnimatedPage from '../quiz/AnimatedPage';
 
 const Profile = () => {
     // data user from session
@@ -31,22 +31,24 @@ const Profile = () => {
 
     if (user_email && user_login) {
         return (
-            <div className="profile">
-                <h1>User Profile</h1>
-                
-                <div className="user-info">
-                    <p><strong>Name:</strong> {user_email}</p>
-                    <p><strong>Email:</strong> {user_login}</p>
-                </div>
-    
-                <button className="logout-button" onClick={handleLogout}>Log Out</button>
+            <AnimatedPage>
+                <div className="profile">
+                    <h1>User Profile</h1>
+                    
+                    <div className="user-info">
+                        <p><strong>Name:</strong> {user_email}</p>
+                        <p><strong>Email:</strong> {user_login}</p>
+                    </div>
+        
+                    <button className="logout-button" onClick={handleLogout}>Log Out</button>
 
-                
-                <h2>Quizzes</h2>
-                <button className="btn-quiz" onClick={redirectPage_CreateQuiz}>Create new quiz</button>
-                <button className="btn-quiz" onClick={redirectPage_OwnQuizzes}>Own quizzes</button>
-                <button className="btn-quiz" onClick={redirectPage_OwnResults}>Own results</button>
-            </div>
+                    
+                    <h2>Quizzes</h2>
+                    <button className="btn-quiz" onClick={redirectPage_CreateQuiz}>Create new quiz</button>
+                    <button className="btn-quiz" onClick={redirectPage_OwnQuizzes}>Own quizzes</button>
+                    <button className="btn-quiz" onClick={redirectPage_OwnResults}>Own results</button>
+                </div>
+            </AnimatedPage>
         );
     } else {
         return (

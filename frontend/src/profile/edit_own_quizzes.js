@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 import '../css/create_quiz.css';
+import AnimatedPage from '../quiz/AnimatedPage';
 
 
 const EditOwnQuizzes = () => {
@@ -136,6 +137,7 @@ const EditOwnQuizzes = () => {
     
     
     return (
+      <AnimatedPage>
         <div className="quiz-container">
           {info_quiz.map((quizIndex) => (
             <div key={quizIndex}>
@@ -190,6 +192,7 @@ const EditOwnQuizzes = () => {
             </div>
           ))}
         </div>
+      </AnimatedPage>
     );
 };
 

@@ -3,6 +3,8 @@ import { useHistory } from "react-router-dom";
 import '../css/auth.css';
 import axios from 'axios'; 
 
+import AnimatedPage from "../quiz/AnimatedPage";
+
 
 const SignIn = () => {
     // state
@@ -41,21 +43,23 @@ const SignIn = () => {
 
 
     return (
-    <div className="sign-in">
-        <div className="auth-form-container">
-            <h2>Login</h2>
-            <form className="login-form" onSubmit={handleSubmit}>
-                <label htmlFor="email">email</label>
-                <input value={email} onChange={(e) => setEmail(e.target.value)}type="email" placeholder="youremail@gmail.com" id="email" name="email" />
-                <label htmlFor="password">password</label>
-                <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="********" id="password" name="password" />
-                <button type="submit">Log In</button>
-            </form>
-            <button className="link-btn"><a href="/sign-up" className="nav-link">Don't have an account?. Sign Up</a></button>
+        <AnimatedPage>
+            <div className="sign-in">
+                <div className="auth-form-container">
+                    <h2>Login</h2>
+                    <form className="login-form" onSubmit={handleSubmit}>
+                        <label htmlFor="email">email</label>
+                        <input value={email} onChange={(e) => setEmail(e.target.value)}type="email" placeholder="youremail@gmail.com" id="email" name="email" />
+                        <label htmlFor="password">password</label>
+                        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="********" id="password" name="password" />
+                        <button type="submit">Log In</button>
+                    </form>
+                    <button className="link-btn"><a href="/sign-up" className="nav-link">Don't have an account?. Sign Up</a></button>
 
-            {NotSuccessful_auth && <h1>Invalid email or password</h1>}
-        </div>
-    </div>
+                    {NotSuccessful_auth && <h1>Invalid email or password</h1>}
+                </div>
+            </div>
+        </AnimatedPage>
     )
 };
 

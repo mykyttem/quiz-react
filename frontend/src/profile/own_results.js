@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import '../css/quizzes.css';
+import AnimatedPage from '../quiz/AnimatedPage';
 
 
 const OwnResult = () => {
@@ -38,15 +39,17 @@ const OwnResult = () => {
     
 
     return (
-        <div className="quizzes-container">
-            {completedQuizzes.map((quiz) => (
-                <div key={quiz.id} onClick={() => redirect_result_answers(quiz.id)} className="quiz-block">
-                    <h1>{quiz.title}</h1>
-                    <p>Correct answers: {quiz.countCorrect}</p>
-                    <p>Questions: {Array(quiz.question).length}</p>
-                </div>
-            ))}
-        </div>
+        <AnimatedPage>
+            <div className="quizzes-container">
+                {completedQuizzes.map((quiz) => (
+                    <div key={quiz.id} onClick={() => redirect_result_answers(quiz.id)} className="quiz-block">
+                        <h1>{quiz.title}</h1>
+                        <p>Correct answers: {quiz.countCorrect}</p>
+                        <p>Questions: {Array(quiz.question).length}</p>
+                    </div>
+                ))}
+            </div>
+        </AnimatedPage>
     ); 
 }
 
