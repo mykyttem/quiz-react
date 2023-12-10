@@ -19,17 +19,14 @@ const Profile = () => {
 
     const redirectPage_CreateQuiz = () => {
         history.push("/profile/create-quiz");
-        window.location.reload();
     }
 
     const redirectPage_OwnQuizzes = () => {
         history.push("/profile/own-quizzes");
-        window.location.reload();
     }
 
     const redirectPage_OwnResults = () => {
-        history.push("/profile/own-results");
-        window.location.reload();
+        history.push("/profile/own-results")
     }
 
     if (user_email && user_login) {

@@ -75,7 +75,6 @@ const ResultsQuiz = () => {
 
             // redirect on page quiz
             history.push(`/quizzes/start-quiz/${quizId}`);
-            window.location.reload();
         }
     };
 

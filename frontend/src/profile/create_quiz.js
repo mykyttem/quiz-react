@@ -57,9 +57,7 @@ const CreateQuiz = () => {
             await axios.post('/profile/create-quiz', dataToSubmit);
             
             // Redirect to profile
-            // FIXME
             history.push('/profile/own-quizzes');
-            window.location.reload();
         } catch (error) {
             console.error('Error submitting quiz:', error);
         }

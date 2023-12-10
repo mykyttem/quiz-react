@@ -33,7 +33,6 @@ const OwnQuizzes = () => {
     // redirect on page edit quiz after click on quiz
     const redirect_editQuiz = (id_quiz) => {
         history.push(`/profile/own-quizzes/edit/${id_quiz}`);
-        window.location.reload();
     }
 
 

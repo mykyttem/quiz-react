@@ -32,7 +32,6 @@ const SignIn = () => {
 
                 // Redirect to profile page
                 history.push("/profile");
-                window.location.reload();
             }
         } catch {
             console.error("Authentication error: ");

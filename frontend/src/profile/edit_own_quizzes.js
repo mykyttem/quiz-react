@@ -116,7 +116,6 @@ const EditOwnQuizzes = () => {
 
             // Redirect to profile
             history.push('/profile/own-quizzes');
-            window.location.reload();
         } catch (error) {
             console.error(`Error submitting quiz: ${error}`);
         }
@@ -130,7 +129,6 @@ const EditOwnQuizzes = () => {
 
             // reload
             history.push('/profile/own-quizzes');
-            window.location.reload();
         } catch (error) {
             console.error(`Error delete quiz: ${error}`);
         }

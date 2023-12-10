@@ -24,7 +24,6 @@ const SignUp = () => {
             });
         
             history.push("/sign-in");
-            window.location.reload();
         } catch (error) {
             // email using
             if (error.response && error.response.data && error.response.data.error === 'User with this email already exists') {

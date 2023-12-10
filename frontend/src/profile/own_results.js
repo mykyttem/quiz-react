@@ -34,7 +34,6 @@ const OwnResult = () => {
     // redirect on page edit quiz after click on quiz
     const redirect_result_answers = (id_quiz) => {
         history.push(`/quizzes/${id_quiz}/${user_id}/results/`);
-        window.location.reload();
     }
     
 

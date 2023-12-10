@@ -96,7 +96,6 @@ const LogicQuiz = () => {
             await axios.post('/quizzes/start-quiz/:quizId/:title/save-results', { answers, user_id, quizId });
 
             history.push(`/quizzes/${quizId}/${user_id}/results`);
-            window.location.reload();
         } catch (e) {
             console.error(`Error save: ${e}`);
         }

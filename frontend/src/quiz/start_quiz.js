@@ -42,7 +42,6 @@ const StartQuiz = () => {
     // redirect
     const redirect_logic = (id_quiz, title) => {
         history.push(`/quizzes/start-quiz/${id_quiz}/${title}`);
-        window.location.reload();
     }
 
     return (

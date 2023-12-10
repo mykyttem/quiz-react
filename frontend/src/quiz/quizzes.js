@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
-
 import '../css/quizzes.css';
 
 
@@ -38,7 +37,6 @@ const Quizzes = () => {
     // redirect on page startQuiz
     const redirect_StartQuiz = (id_quiz) => {
         history.push(`/quizzes/start-quiz/${id_quiz}`);
-        window.location.reload();
     }
 
 
