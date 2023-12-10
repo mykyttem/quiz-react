@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../css/create_quiz.css';
 import AnimatedPage from '../quiz/AnimatedPage';
@@ -7,7 +7,6 @@ import AnimatedPage from '../quiz/AnimatedPage';
 
 const CreateQuiz = () => {
     // state
-    const history = useHistory();
     const user_id = sessionStorage.getItem('user_id');
 
     // save values
@@ -56,9 +55,6 @@ const CreateQuiz = () => {
             }));
 
             await axios.post('/profile/create-quiz', dataToSubmit);
-            
-            // Redirect to profile
-            history.push('/profile/own-quizzes');
         } catch (error) {
             console.error('Error submitting quiz:', error);
         }
@@ -100,12 +96,16 @@ const CreateQuiz = () => {
                             </div>
                         </div>
                     ))}
-                    <button className="submit-button" type="button" onClick={handleSubmit}>
-                        Submit
-                    </button>
+           
                     <button className="next-question-button" type="button" onClick={handleAddQuestion}>
                         Add Question
                     </button>
+
+                    <Link to="/profile/own-quizzes">
+                        <button type="button" className="submit-button" onClick={handleSubmit}>
+                            submit
+                        </button>
+                    </Link>
                 </div>
             </AnimatedPage>
         );

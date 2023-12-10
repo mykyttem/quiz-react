@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom'; 
+import { useParams, Link } from 'react-router-dom'; 
 import axios from 'axios';
 
 import AnimatedPage from './AnimatedPage';
@@ -16,7 +16,6 @@ const LogicQuiz = () => {
         - redirect on page result 
     */
 
-    const history = useHistory();
 
     // get id quiz, from url
     const { quizId } = useParams();
@@ -94,8 +93,6 @@ const LogicQuiz = () => {
     const save_answers = async () => {
         try {
             await axios.post('/quizzes/start-quiz/:quizId/:title/save-results', { answers, user_id, quizId });
-
-            history.push(`/quizzes/${quizId}/${user_id}/results`);
         } catch (e) {
             console.error(`Error save: ${e}`);
         }
@@ -127,7 +124,10 @@ const LogicQuiz = () => {
                                 </div>
                             </div>
                         ))}
-                        <button className="button" onClick={save_answers}>Done</button>
+
+                        <Link to={`/quizzes/${quizId}/${user_id}/results`}>
+                            <button className="button" onClick={save_answers}>Done</button>
+                        </Link>
                     </div>
                 ))}
             </AnimatedPage>

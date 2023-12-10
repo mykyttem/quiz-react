@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import '../css/quizzes.css';
 import AnimatedPage from './AnimatedPage';
 
@@ -16,8 +16,6 @@ const Quizzes = () => {
     // state
     const [quizzes, setQuizzes] = useState([]);
 
-    // history 
-    const history = useHistory();
 
     // when loading the page
     useEffect(() => {
@@ -35,22 +33,22 @@ const Quizzes = () => {
     }, []);
 
 
-    // redirect on page startQuiz
-    const redirect_StartQuiz = (id_quiz) => {
-        history.push(`/quizzes/start-quiz/${id_quiz}`);
-    }
-
-
     return (
         <AnimatedPage>
             <div className="quizzes-container">
-                    {quizzes.map((quiz) => (
-                        <div key={quiz.id} onClick={() => redirect_StartQuiz(quiz.id)} className="quiz-block">
-                            <h1>{quiz.title}</h1>
-                            <p>Questions: {Array(quiz.question).length}</p>
-                            <h1>{quiz.author_login}</h1>
-                        </div>
-                    ))}
+                {quizzes.map((quiz) => (
+                    // Use Link for navigation
+                    <Link 
+                        key={quiz.id} 
+                        to={`/quizzes/start-quiz/${quiz.id}`} 
+                        style={{ textDecoration: 'none', color: 'inherit', display: 'inline-block' }} 
+                        className="quiz-block"
+                    >
+                        <h1>{quiz.title}</h1>
+                        <p>Questions: {Array(quiz.question).length}</p>
+                        <h1>{quiz.author_login}</h1>
+                    </Link>
+                ))}
             </div>
         </AnimatedPage>
     );

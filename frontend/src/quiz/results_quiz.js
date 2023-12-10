@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom'; 
+import { useParams, Link } from 'react-router-dom'; 
 import axios from 'axios';
 import AnimatedPage from './AnimatedPage';
 
@@ -12,7 +12,6 @@ const ResultsQuiz = () => {
         - button for "do again", when click window confirmed, if yeas - delete from DB results and redirect on page quiz
     */
 
-    const history = useHistory();
 
     // get id user from sessuib
     const user_id = sessionStorage.getItem('user_id');
@@ -72,9 +71,6 @@ const ResultsQuiz = () => {
         if (isConfirmed) {
             // post for delete result
             await axios.post(`/quizzes/${quizId}/${user_id}/delete/results`, { quizId, user_id });
-
-            // redirect on page quiz
-            history.push(`/quizzes/start-quiz/${quizId}`);
         }
     };
 
@@ -111,7 +107,10 @@ const ResultsQuiz = () => {
                                 </div>
                             </div>
                         ))}
-                        <button className="button" onClick={btn_again}>Do again</button>
+
+                        <Link to={`/quizzes/start-quiz/${quizId}`}>
+                            <button className="button" onClick={btn_again}>Do again</button>
+                        </Link>
                     </div>
                 ))}
             </AnimatedPage>

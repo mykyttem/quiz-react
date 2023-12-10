@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import '../css/create_quiz.css';
 import AnimatedPage from '../quiz/AnimatedPage';
@@ -16,8 +16,6 @@ const EditOwnQuizzes = () => {
         - Redirects the user to the profile page and reloads the page
     */
 
-
-    const history = useHistory();
     
     // states
     const { quizId } = useParams();
@@ -114,9 +112,6 @@ const EditOwnQuizzes = () => {
 
             // send
             await axios.post('/profile/own-quizzes/update/:quizId', dataToSubmit);
-
-            // Redirect to profile
-            history.push('/profile/own-quizzes');
         } catch (error) {
             console.error(`Error submitting quiz: ${error}`);
         }
@@ -127,9 +122,6 @@ const EditOwnQuizzes = () => {
         try {
             // send quiz Id for delete
             await axios.post('/profile/own-quizzes/delete/:quizId', {quizId});
-
-            // reload
-            history.push('/profile/own-quizzes');
         } catch (error) {
             console.error(`Error delete quiz: ${error}`);
         }
@@ -180,14 +172,20 @@ const EditOwnQuizzes = () => {
                 </div>
               ))}
       
-              <button className="submit-button" type="button" onClick={UpdateSubmit}>
-                Submit
-              </button>
+              <Link to="/profile/own-quizzes">
+                <button type="button" className="submit-button" onClick={UpdateSubmit}>
+                    submit
+                </button>
+              </Link>
+
+              <Link to="/profile/own-quizzes">
+                <button type="button" className="delete-quiz-button" onClick={DeleteQuiz}>
+                    Delete
+                </button>
+              </Link>
+
               <button className="next-question-button" type="button" onClick={handleAddQuestion}>
                 Add Question
-              </button>
-              <button className="delete-quiz-button" type="button" onClick={DeleteQuiz}>
-                Delete
               </button>
             </div>
           ))}

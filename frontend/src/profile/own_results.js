@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import '../css/quizzes.css';
 import AnimatedPage from '../quiz/AnimatedPage';
@@ -10,8 +10,6 @@ const OwnResult = () => {
     const user_id = sessionStorage.getItem('user_id');
     const [completedQuizzes, setCompletedQuizzes] = useState([]);
 
-    // history routes
-    const history = useHistory();
 
     // when loading the page
     useEffect(() => {
@@ -30,23 +28,22 @@ const OwnResult = () => {
 
         fetchQuizzes();
     }, [user_id]);
-
-
-    // redirect on page edit quiz after click on quiz
-    const redirect_result_answers = (id_quiz) => {
-        history.push(`/quizzes/${id_quiz}/${user_id}/results/`);
-    }
     
 
     return (
         <AnimatedPage>
             <div className="quizzes-container">
                 {completedQuizzes.map((quiz) => (
-                    <div key={quiz.id} onClick={() => redirect_result_answers(quiz.id)} className="quiz-block">
+                    <Link
+                        key={quiz.id}
+                        to={`/quizzes/${quiz.id}/${user_id}/results/`}
+                        style={{ textDecoration: 'none', color: 'inherit', display: 'inline-block' }}
+                        className="quiz-block"
+                    >
                         <h1>{quiz.title}</h1>
                         <p>Correct answers: {quiz.countCorrect}</p>
                         <p>Questions: {Array(quiz.question).length}</p>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </AnimatedPage>

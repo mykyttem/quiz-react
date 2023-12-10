@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom'; 
+import { useParams, Link } from 'react-router-dom'; 
 import axios from 'axios';
 
 import '../css/start_quiz.css';
@@ -12,7 +12,6 @@ const StartQuiz = () => {
         - button start   
         - redirect on page logic quiz, in url, id quiz, and first question
     */
-    const history = useHistory();
 
     // get id quiz, from url
     const { quizId } = useParams();
@@ -38,27 +37,26 @@ const StartQuiz = () => {
         fetchQuiz();
     }, [quizId]);
 
-    
-    // redirect
-    const redirect_logic = (id_quiz, title) => {
-        history.push(`/quizzes/start-quiz/${id_quiz}/${title}`);
-    }
 
     return (
         <div className="container"> 
             <AnimatedPage>
                 {quiz.map((q) => (
-                    <div key={q} onClick={() => redirect_logic(quizId, q.title)}>
+                    <Link 
+                        key={q} 
+                        to={`/quizzes/start-quiz/${quizId}/${q.title}`}
+                        style={{ textDecoration: 'none', color: 'inherit', display: 'inline-block' }}
+                    >
                         <div className="title">{q.title}</div>
                         <div className="info">
                             <p><strong>Amount of Questions:</strong>{Array(q.question).length}</p>
                         </div>
                         
                         <button className="button">Start Quiz</button>
-                    </div>
+                    </Link>
                 ))}
             </AnimatedPage>
-      </div> 
+        </div>
     )
 }
 

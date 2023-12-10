@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import '../css/quizzes.css';
 import AnimatedPage from '../quiz/AnimatedPage';
@@ -10,9 +10,6 @@ const OwnQuizzes = () => {
     const user_id = sessionStorage.getItem('user_id');
     const [quizzes, setQuizzes] = useState([]);
     
-    // history routes
-    const history = useHistory();
-
     // when loading the page
     useEffect(() => {
         const fetchQuizzes = async () => {
@@ -31,20 +28,19 @@ const OwnQuizzes = () => {
     }, [user_id]);
 
 
-    // redirect on page edit quiz after click on quiz
-    const redirect_editQuiz = (id_quiz) => {
-        history.push(`/profile/own-quizzes/edit/${id_quiz}`);
-    }
-
-
     return (
         <AnimatedPage>
             <div className="quizzes-container">
                 {quizzes.map((quiz) => (
-                    <div key={quiz.id} onClick={() => redirect_editQuiz(quiz.id)} className="quiz-block">
+                    <Link
+                        key={quiz.id}
+                        to={`/profile/own-quizzes/edit/${quiz.id}`}
+                        style={{ textDecoration: 'none', color: 'inherit', display: 'inline-block' }}
+                        className="quiz-block"
+                    >
                         <h1>{quiz.title}</h1>
                         <p>Questions: {Array(quiz.question).length}</p>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </AnimatedPage>

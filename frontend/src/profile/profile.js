@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import '../css/profile.css';
 import AnimatedPage from '../quiz/AnimatedPage';
 
@@ -8,7 +8,6 @@ const Profile = () => {
     const user_email = sessionStorage.getItem('user_email');
     const user_login = sessionStorage.getItem('user_login');
 
-    const history = useHistory();
 
     // button log out
     const handleLogout = () => {
@@ -16,18 +15,6 @@ const Profile = () => {
         window.location.reload();
     }
 
-
-    const redirectPage_CreateQuiz = () => {
-        history.push("/profile/create-quiz");
-    }
-
-    const redirectPage_OwnQuizzes = () => {
-        history.push("/profile/own-quizzes");
-    }
-
-    const redirectPage_OwnResults = () => {
-        history.push("/profile/own-results")
-    }
 
     if (user_email && user_login) {
         return (
@@ -44,9 +31,15 @@ const Profile = () => {
 
                     
                     <h2>Quizzes</h2>
-                    <button className="btn-quiz" onClick={redirectPage_CreateQuiz}>Create new quiz</button>
-                    <button className="btn-quiz" onClick={redirectPage_OwnQuizzes}>Own quizzes</button>
-                    <button className="btn-quiz" onClick={redirectPage_OwnResults}>Own results</button>
+                    <Link to="/profile/create-quiz">
+                        <button className="btn-quiz">Create new quiz</button>
+                    </Link>
+                    <Link to="/profile/own-quizzes">
+                        <button className="btn-quiz">Own quizzes</button>
+                    </Link>
+                    <Link to="/profile/own-results">
+                        <button className="btn-quiz">Own results</button>
+                    </Link>
                 </div>
             </AnimatedPage>
         );

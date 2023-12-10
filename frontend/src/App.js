@@ -1,5 +1,5 @@
 import './css/App.css';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 
 import Home from './home';
 
@@ -36,31 +36,29 @@ function Page_notFound() {
 function App() {
   return (
       <div className="App">      
+        <BrowserRouter>
           <nav>
             <ul className="navbar">
               <li className="nav-item">
-                <a href="/" className="nav-link">Home</a>
+                <Link to="/" className="nav-link">Home</Link>
               </li>
               <li className="nav-item">
-                <a href="/about" className="nav-link">About</a>
+                <Link to="/about" className="nav-link">About</Link>
               </li>
               <li className="nav-item">
-                <a href="/quizzes" className="nav-link">Quizzes</a>
+                <Link to="/quizzes" className="nav-link">Quizzes</Link>
               </li>
               <li className="nav-item">
-                <a href="/sign-up" className="nav-link">Sign Up</a>
+                <Link to="/sign-up" className="nav-link">Sign Up</Link>
               </li>
-
               <li className="nav-item">
-                <a href="/sign-in" className="nav-link">Sign In</a>
+                <Link to="/sign-in" className="nav-link">Sign In</Link>
               </li>
-
               <li className="nav-item">
-                <a href="/profile" className="nav-link">Profile</a>
+                <Link to="/profile" className="nav-link">Profile</Link>
               </li>
             </ul>
 
-            <BrowserRouter>
               <Switch>
                 <Route exact path='/' component={ Home } />
             
@@ -80,8 +78,8 @@ function App() {
 
                 <Route component={Page_notFound} />
               </Switch>
-            </BrowserRouter>
           </nav>
+        </BrowserRouter>
       </div>
   );
 }
