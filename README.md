@@ -25,7 +25,7 @@ second console
 ```bash
 cd backend
 npm install
-npm run dev
+npm start
 ```
 
 Runs the app in the development mode.\
